@@ -1,0 +1,14 @@
+{% load static %}
+{% load cache_bust %}
+
+<!DOCTYPE html>
+<html>
+    <Head>
+        <link rel="stylesheet" href="{% static 'Example.css' %} ?{% cache_bust %}">
+    </Head>
+<body>
+
+    <h1>Hello motherfuckers</h1>
+
+</body>
+</html>
