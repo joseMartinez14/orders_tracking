@@ -2,7 +2,7 @@ body {
     color: #000;
     overflow-x: hidden;
     height: 100%;
-    background-color: #f1a71c;
+    background-image: linear-gradient(135deg, white, #92A8D1, #34568B);
     background-repeat: no-repeat;
 }
 
@@ -11,7 +11,7 @@ body {
     background-color: #ECEFF1;
     padding-bottom: 20px;
     margin-top: 5px;
-    margin-bottom: 90px;
+    margin-bottom: 50px;
     border-radius: 10px;
 }
 

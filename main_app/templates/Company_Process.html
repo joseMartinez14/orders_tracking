@@ -1,0 +1,317 @@
+
+{% load static %}
+{% load cache_bust %}
+<!DOCTYPE html>
+<html lang="es">
+
+    <Head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/Example.css' %} ?{% cache_bust %}">
+    </Head>
+
+
+<body>
+
+    <section>
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                <div class="card-body py-4 px-4 px-md-5">
+      
+                  <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                    <i class="fas fa-check-square me-1"></i>
+                    <u>Add new process</u>
+                  </p>
+                  <button 
+                    type="button"
+                    class="btn btn-lg btn-secondary"
+                    data-bs-container="body"
+                    data-bs-toggle="popover"
+                    data-bs-placement="right" 
+                    title="Functional guide" 
+                    data-bs-content="Add process to your company to be used as a template to create a new order"
+                    id="information_popover">
+                    Information
+                  </button>
+
+                  <div class="pb-2">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex flex-column">
+                            <label for="exampleFormControlInput1" class="form-label form-control-lg">Process name:</label>
+                            <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1">
+                            <label for="exampleFormControlInput1_" class="form-label form-control-lg">Process description:</label>
+                            <textarea  class="form-control form-control-lg" id="exampleFormControlInput1_"
+                            placeholder="Optional"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="h3 mt-3 mb-3 pb-3 ttext-secondary">
+                    <i class="fas fa-check-square me-1"></i>
+                    <u>Add process steps</u>
+                  </p>
+
+                  <div class="pb-2">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex flex-column">
+                            <label for="exampleFormControlInput1" class="form-label form-control-lg">Step name:</label>
+                            <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1">
+                            <label for="exampleFormControlInput1_" class="form-label form-control-lg">Step description:</label>
+                            <textarea  class="form-control form-control-lg" id="exampleFormControlInput1_"
+                            placeholder="Optional"></textarea>
+                            <div class="mt-3">
+                              <button type="button" class="btn btn-primary">Add step</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="my-4">
+
+                  <p class="h3 mt-3 mb-3 pb-3 text-secondary">
+                    <i class="fas fa-check-square me-1"></i>
+                    <u>Steps</u>
+                  </p>
+
+                  <div class="table-responsive">
+                    <table id="steps_list" style="width:100%" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Order</th>
+                          <th>Name</th>
+                          <th>Description</th>
+                          <th>Move Up</th>
+                          <th>Move Down</th>
+                          <th>Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>#1</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/up-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/down-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/bin.png' %}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#2</td>
+                          <td>Accountant</td>
+                          <td>Tokyo</td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/up-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/down-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/bin.png' %}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#3</td>
+                          <td>Junior Technical Author</td>
+                          <td>San Francisco esto deberia ser un texto bien largo y nose que mas poner bla bla bla esto deberia ser un texto bien largo y nose que mas poner bla bla bla esto deberia ser un texto bien largo y nose que mas poner bla bla bla</td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/up-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/down-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/bin.png' %}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#4</td>
+                          <td>Senior Javascript Developer</td>
+                          <td>Edinburgh</td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/up-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/down-arrow.png' %}" />
+                          </td>
+                          <td>
+                            <input type="image" id="myimage" style="height:50px;width:50px;" src="{% static 'imagenes/bin.png' %}" />
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class=" d-flex justify-content-center  ">
+                    <button type="button" class="btn mt-3 btn-success">Submit process</button>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+</body>
+
+
+<script>
+    
+    var server = "{{server}}"
+
+    var fake_steps_data = [
+      {
+        fake_id : "123",
+        step_name: "Escoger tipo",
+        step_Order_Number: 1,
+        description: "Aqui tendria que escoger el tipo de producto o servicio y mandarlo por whatsapp"
+      },
+      {
+        fake_id : "456",
+        step_name: "Mandar medidas",
+        step_Order_Number: 2,
+        description: "supuestamente la persona deberia mandar cuales son las medidas para hacerle algo"
+      },
+      {
+        fake_id : "789",
+        step_name: "Pagar",
+        step_Order_Number: 3,
+        description: "Mandar comprobante de pago al whatsapp 23564861"
+      }
+    ]
+
+    var lista = $("#steps_list")
+
+    main()
+    
+    function main(){
+      console.log(server)
+      console.log("Hello ooo bitch")
+
+      populate_steps_table()
+
+    }
+
+
+    function populate_steps_table(){
+      console.log("Entro a populate_steps_table")
+      console.log(fake_steps_data)
+      lista.empty();
+      fake_steps_data.forEach((obj)=>{
+        console.log(obj)
+        var tr = $("<tr/>")
+        tr.html("<td>"+ obj.step_Order_Number + "</td>"+
+                "<td>"+ obj.step_name + "</td>"+
+                "<td>"+ obj.description + "</td>"+
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/up-arrow.png' %}' onclick='move_step_up("+obj.fake_id+","+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/down-arrow.png' %}' onclick='move_step_down("+obj.fake_id+","+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/bin.png' %}' onclick='delete_step("+obj.fake_id+","+obj.step_Order_Number+")'</td> " )
+        lista.append(tr);
+      })
+      
+
+    }
+
+    function move_step_up(fake_id, order){
+      console.log("Entro a move_step_up ***")
+      console.log(fake_id)
+      console.log(order)
+    }
+
+    function move_step_down(fake_id, order){
+      console.log("Entro a move_step_down ***")
+      console.log(fake_id)
+      console.log(order)
+    }
+
+    function delete_step(fake_id, order){
+      console.log("Entro a delete_step ***")
+      console.log(fake_id)
+      console.log(order)
+    }
+
+    function loginAction(){
+        var email = $("#email_field").val()
+        var contra = $("#password_field").val()
+
+        console.log(email)
+        console.log(contra)
+
+        if (document.cookie && document.cookie !== '') {
+          console.log(document.cookie)
+        }
+
+        var dat = {'contrasenna':contra , 'usuario':email}
+        const csrftoken = getCookie('csrftoken'); 
+
+        try{
+          $.ajax({
+              url: server+"/orders_manager/login/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "POST",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                console.log(result)
+              },
+              error: function(status, error){
+                console.log("Login no fue exitoso")
+                console.log(error)
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'No se pudo ingresar con exito'
+                })
+              }
+          });
+        }catch(err){
+          console.log("error","Hubo un error en la conexion con la base de datos")
+          console.log(err)
+        }
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue; 
+    }
+</script>
+
+
+
+</html>
+
+
+
+
+
+
+
