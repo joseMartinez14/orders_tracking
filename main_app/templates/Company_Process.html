@@ -231,21 +231,38 @@
     }
 
     function move_step_up(fake_id, order){
-      console.log("Entro a move_step_up ***")
-      console.log(fake_id)
-      console.log(order)
+      if (order > 1){
+        fake_steps_data[order -1].step_Order_Number = order - 1
+        fake_steps_data[order -2].step_Order_Number = order
+        fake_steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+        populate_steps_table()
+      }
     }
 
     function move_step_down(fake_id, order){
-      console.log("Entro a move_step_down ***")
-      console.log(fake_id)
-      console.log(order)
+      if(order != fake_steps_data.length){
+        fake_steps_data[order -1].step_Order_Number = order + 1
+        fake_steps_data[order].step_Order_Number = order 
+        fake_steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+        populate_steps_table()
+        return true
+      }
+      return false
+
     }
 
     function delete_step(fake_id, order){
       console.log("Entro a delete_step ***")
       console.log(fake_id)
       console.log(order)
+
+      fake_steps_data.splice(order - 1, 1)
+      let length = fake_steps_data.length
+      for (let i = 0; i < length; i++){
+        fake_steps_data[i].step_Order_Number = i + 1
+      }
+      populate_steps_table()
+
     }
 
     function loginAction(){
