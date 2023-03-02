@@ -69,6 +69,13 @@ TEMPLATES = [
     },
 ]
 
+#Disable browser overrides
+REST_FRAMEWORK = {
+    'FORM_METHOD_OVERRIDE': None,
+    'FORM_CONTENT_OVERRIDE': None,
+    'FORM_CONTENTTYPE_OVERRIDE': None
+}
+
 WSGI_APPLICATION = 'orders_tracking.wsgi.application'
 
 

@@ -86,13 +86,21 @@
 <script>
     
     var server = "{{server}}"
+    var ajax_attempt = 0
+    var recall_flag = false
     main()
 
     function main(){
         console.log(server)
         console.log("Hello ooo bitch")
-        $("#login_buttom").on("click", function(){loginAction()});
+        $("#login_buttom").on("click", function(){login_triger()});
 
+    }
+
+    function login_triger(){
+      ajax_attempt = 0
+      recall_flag = false
+      loginAction()
     }
 
     function loginAction(){
@@ -117,18 +125,37 @@
               url: server+"/orders_manager/login/",
               headers: {'X-CSRFToken': csrftoken},
               type: "POST",
-              dataType: 'json',
               data: JSON.stringify(dat) ,
               success: function (result) {
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              console.log("Output")
                 console.log(result)
               },
               error: function(status, error){
-                console.log("Login no fue exitoso")
-                console.log(error)
+                if (status.status == 303){
+                  console.log("No tenia una session ID entonces le mando otra")
+                  ajax_attempt++
+                  if (ajax_attempt > 4){
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Browser error, please close and try again'
+                    })
+                    recall_flag = false
+                  } else {
+                    recall_flag = true
+                  }
+                }
                 Swal.fire({
                   icon: 'error',
                   title: 'Oops...',
-                  text: 'No se pudo ingresar con exito'
+                  text: 'Unable to access. Email or password doesnt match'
                 })
               }
           });
@@ -136,12 +163,20 @@
           console.log("error","Hubo un error en la conexion con la base de datos")
           console.log(err)
         }
+
+        if(recall_flag == true){
+          loginAction()
+        }
     }
 
     function getCookie(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
           const cookies = document.cookie.split(';');
+
+          console.log("This is all the cookies")
+          console.log(cookies)
+          
           for (let i = 0; i < cookies.length; i++) {
               const cookie = cookies[i].trim();
               // Does this cookie string begin with the name we want?

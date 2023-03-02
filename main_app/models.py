@@ -17,8 +17,8 @@ class User(models.Model):
 
 
 class Session(models.Model):
-    session_key = models.CharField(max_length=40, primary_key = True)
-    user_email = models.CharField
+    session_key = models.CharField(max_length=60, primary_key = True)
+    user_email = models.CharField(max_length=40, null=False)
     creation_date = models.DateTimeField(auto_now=False, null=False)
     expire_date = models.DateTimeField(auto_now=False, null=False)
 

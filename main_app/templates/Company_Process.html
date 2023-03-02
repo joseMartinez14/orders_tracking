@@ -19,7 +19,12 @@
     </Head>
 
 
+
 <body>
+
+  <header>
+    {% include 'header_bar.html' with server=server %}
+  </header>
 
     <section>
         <div class="container py-5 h-100">
@@ -28,30 +33,19 @@
               <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
                 <div class="card-body py-4 px-4 px-md-5">
       
-                  <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                  <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
                     <i class="fas fa-check-square me-1"></i>
                     <u>Add new process</u>
                   </p>
-                  <button 
-                    type="button"
-                    class="btn btn-lg btn-secondary"
-                    data-bs-container="body"
-                    data-bs-toggle="popover"
-                    data-bs-placement="right" 
-                    title="Functional guide" 
-                    data-bs-content="Add process to your company to be used as a template to create a new order"
-                    id="information_popover">
-                    Information
-                  </button>
 
                   <div class="pb-2">
                     <div class="card">
                       <div class="card-body">
                         <div class="d-flex flex-column">
-                            <label for="exampleFormControlInput1" class="form-label form-control-lg">Process name:</label>
-                            <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1">
-                            <label for="exampleFormControlInput1_" class="form-label form-control-lg">Process description:</label>
-                            <textarea  class="form-control form-control-lg" id="exampleFormControlInput1_"
+                            <label for="order_name_field" class="form-label form-control-lg">Process name:</label>
+                            <input type="text" class="form-control form-control-lg" id="order_name_field">
+                            <label for="order_description_field" class="form-label form-control-lg">Process description:</label>
+                            <textarea  class="form-control form-control-lg" id="order_description_field"
                             placeholder="Optional"></textarea>
                         </div>
                       </div>
@@ -67,13 +61,13 @@
                     <div class="card">
                       <div class="card-body">
                         <div class="d-flex flex-column">
-                            <label for="exampleFormControlInput1" class="form-label form-control-lg">Step name:</label>
-                            <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1">
-                            <label for="exampleFormControlInput1_" class="form-label form-control-lg">Step description:</label>
-                            <textarea  class="form-control form-control-lg" id="exampleFormControlInput1_"
+                            <label for="step_name_field" class="form-label form-control-lg">Step name:</label>
+                            <input type="text" class="form-control form-control-lg" id="step_name_field">
+                            <label for="step_description_field" class="form-label form-control-lg">Step description:</label>
+                            <textarea  class="form-control form-control-lg" id="step_description_field"
                             placeholder="Optional"></textarea>
                             <div class="mt-3">
-                              <button type="button" class="btn btn-primary">Add step</button>
+                              <button type="button" class="btn btn-primary" id="add_step_button">Add step</button>
                             </div>
                         </div>
                       </div>
@@ -161,7 +155,7 @@
                   </div>
 
                   <div class=" d-flex justify-content-center  ">
-                    <button type="button" class="btn mt-3 btn-success">Submit process</button>
+                    <button type="button" class="btn mt-3 btn-success" id="submit_buttom">Submit process</button>
                   </div>
       
                 </div>
@@ -177,21 +171,18 @@
     
     var server = "{{server}}"
 
-    var fake_steps_data = [
+    var steps_data = [
       {
-        fake_id : "123",
         step_name: "Escoger tipo",
         step_Order_Number: 1,
         description: "Aqui tendria que escoger el tipo de producto o servicio y mandarlo por whatsapp"
       },
       {
-        fake_id : "456",
         step_name: "Mandar medidas",
         step_Order_Number: 2,
         description: "supuestamente la persona deberia mandar cuales son las medidas para hacerle algo"
       },
       {
-        fake_id : "789",
         step_name: "Pagar",
         step_Order_Number: 3,
         description: "Mandar comprobante de pago al whatsapp 23564861"
@@ -208,42 +199,114 @@
 
       populate_steps_table()
 
+      $("#add_step_button").on("click", function(){add_new_step()})
+      $("#submit_buttom").on("click", function(){add_new_process()})
+
+    }
+
+    function add_new_process(){
+      if (validate_input() == false){
+        return
+      }
+
+      var name = $("#order_name_field")
+      var description = $("#order_description_field")
+
+      var dat = {'process_name':name.val() , 'process_description':description.val(), 'steps': steps_data}
+
+      const csrftoken = getCookie('csrftoken') 
+
+      try{
+          $.ajax({
+              url: server+"/orders_manager/create_process/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "PUT",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Your process has been saved',
+                  showConfirmButton: false,
+                  timer: 2000
+                })
+                steps_data = []
+                name.val("")
+                description.val("")
+              },
+              error: function(status, error){
+                console.log("Login no fue exitoso")
+                console.log(error)
+                console.log(status.status)
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'No se pudo ingresar con exito'
+                })
+              }
+          });
+        }catch(err){
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Fallo la conexion con el servidor'
+          })
+        }
+    }
+
+    function add_new_step(){
+      console.log("Entro a add_new_step")
+      var name = $("#step_name_field")
+      var description = $("#step_description_field")
+      if(name.val() == ""){
+        Swal.fire('Please fill the step name')
+        return 
+      }
+      var obj = {
+        step_name: name.val(),
+        step_Order_Number: steps_data.length +1,
+        description: description.val()
+      }
+      steps_data.push(obj)
+      populate_steps_table()
+      name.val("")
+      description.val("")
     }
 
 
     function populate_steps_table(){
       console.log("Entro a populate_steps_table")
-      console.log(fake_steps_data)
+      console.log(steps_data)
       lista.empty();
-      fake_steps_data.forEach((obj)=>{
+      steps_data.forEach((obj)=>{
         console.log(obj)
         var tr = $("<tr/>")
         tr.html("<td>"+ obj.step_Order_Number + "</td>"+
                 "<td>"+ obj.step_name + "</td>"+
                 "<td>"+ obj.description + "</td>"+
-                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/up-arrow.png' %}' onclick='move_step_up("+obj.fake_id+","+obj.step_Order_Number+")'</td> " +
-                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/down-arrow.png' %}' onclick='move_step_down("+obj.fake_id+","+obj.step_Order_Number+")'</td> " +
-                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/bin.png' %}' onclick='delete_step("+obj.fake_id+","+obj.step_Order_Number+")'</td> " )
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/up-arrow.png' %}' onclick='move_step_up("+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/down-arrow.png' %}' onclick='move_step_down("+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/bin.png' %}' onclick='delete_step("+obj.step_Order_Number+")'</td> " )
         lista.append(tr);
       })
-      
-
     }
 
-    function move_step_up(fake_id, order){
+    function move_step_up( order){
       if (order > 1){
-        fake_steps_data[order -1].step_Order_Number = order - 1
-        fake_steps_data[order -2].step_Order_Number = order
-        fake_steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+        steps_data[order -1].step_Order_Number = order - 1
+        steps_data[order -2].step_Order_Number = order
+        steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
         populate_steps_table()
       }
     }
 
-    function move_step_down(fake_id, order){
-      if(order != fake_steps_data.length){
-        fake_steps_data[order -1].step_Order_Number = order + 1
-        fake_steps_data[order].step_Order_Number = order 
-        fake_steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+    function move_step_down(order){
+      if(order != steps_data.length){
+        steps_data[order -1].step_Order_Number = order + 1
+        steps_data[order].step_Order_Number = order 
+        steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
         populate_steps_table()
         return true
       }
@@ -251,18 +314,27 @@
 
     }
 
-    function delete_step(fake_id, order){
-      console.log("Entro a delete_step ***")
-      console.log(fake_id)
-      console.log(order)
+    function delete_step( order){
 
-      fake_steps_data.splice(order - 1, 1)
-      let length = fake_steps_data.length
+      steps_data.splice(order - 1, 1)
+      let length = steps_data.length
       for (let i = 0; i < length; i++){
-        fake_steps_data[i].step_Order_Number = i + 1
+        steps_data[i].step_Order_Number = i + 1
       }
       populate_steps_table()
 
+    }
+
+    function validate_input(){
+      var order_name = $("#order_name_field")
+      if (
+        order_name.val() == "" ||
+        steps_data.length < 1
+      ){
+        Swal.fire('Fill order name and at least 1 step')
+        return false
+      }
+      return true
     }
 
     function loginAction(){
@@ -281,7 +353,7 @@
 
         try{
           $.ajax({
-              url: server+"/orders_manager/login/",
+              url: server+"/orders_manager/create_process/",
               headers: {'X-CSRFToken': csrftoken},
               type: "POST",
               dataType: 'json',
