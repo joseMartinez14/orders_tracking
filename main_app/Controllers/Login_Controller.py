@@ -21,6 +21,8 @@ class Login_Controller(APIView):
     def get(self, request):
         #I guess I need to check cache and to see if is logged in or session?
         template = loader.get_template('Login.html')
+        #template = loader.get_template('registration/password_reset_form')
+        
         data = prepare_login_data()
         return HttpResponse(template.render(data, request))
     
