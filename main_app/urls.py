@@ -4,6 +4,7 @@ from .Controllers.Login_Controller import Login_Controller
 from .Controllers.Register_Controller import Register_Controller
 from .Controllers.Company_Process_Controller import Company_Process_Controller
 from .Controllers.Company_Controller import Company_Controller
+from .Controllers.Order_Controller import Order_Controller
 
 app_name = "main_app"
 
@@ -14,7 +15,8 @@ urlpatterns = [
     path('login/', Login_Controller.as_view(), name = 'Login'),
     path('register/', Register_Controller.as_view(), name = 'Register'),
     path('create_process/', Company_Process_Controller.as_view(), name = 'create_process'),
-    path('create_company/', Company_Controller.as_view(), name = 'create_company')
+    path('create_company/', Company_Controller.as_view(), name = 'create_company'),
+    path('create_order/', Order_Controller.as_view(), name = 'order_controller')
 ]
 
 

@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'orders_tracking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'order_tracking_db',
+        'NAME': 'orders_tracking',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST':'localhost',
