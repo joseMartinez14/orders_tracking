@@ -40,13 +40,13 @@ class Mapping_Usuario_Empresa(models.Model):
 
 class Company_Process(models.Model):
     #ID Implicito
-    Process_Name = models.CharField(max_length=20, null=False)
+    Process_Name = models.CharField(max_length=70, null=False)
     Description = models.CharField(max_length=150, null=False)
     Company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
 class Company_Process_step_template(models.Model):
     #ID Implicito
-    Step_Name = models.CharField(max_length=20, null=False)
+    Step_Name = models.CharField(max_length=50, null=False)
     Step_Order_Number = models.IntegerField(null=False) #Este es el orden en que va el step si es el primero o ultimo
     Description = models.CharField(max_length=150, null=False)
     Company_Process = models.ForeignKey(Company_Process, on_delete=models.CASCADE)

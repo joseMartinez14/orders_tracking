@@ -12,7 +12,9 @@ from rest_framework.response import Response
 import os
 import random
 import string
+from django.contrib.sessions.models import Session
 from datetime import datetime
+from django.contrib.auth.models import User as auth_user
 
 from main_app.models import User,Session
 
@@ -59,6 +61,17 @@ def prepare_login_data():
     return {
         "server" : host
     }
+
+
+def get_user_by_session(session):
+    print("aqui aquiu aqui")
+    print(session)
+    s = Session.objects.get(pk=session)
+    user_logged_in = s.get_decoded()
+    user_id = user_logged_in["_auth_user_id"]
+    _user = auth_user.objects.filter(id=user_id).get()
+    return _user
+
 
 
 def make_login( email:str, password:str ):

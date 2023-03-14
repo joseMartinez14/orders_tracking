@@ -44,6 +44,8 @@ class Company_Controller(APIView):
 
         try:
             result = create_company(x, session)
+            if(result == 'UNABLE'):
+                return Response({}, status=status.HTTP_302_FOUND)
             return Response({}, status=status.HTTP_200_OK)
         except:
             print("An exception occurred") 
@@ -59,10 +61,11 @@ def create_company(json_data, session):
         #Return none. So controller can redirect
         return None
     
-    s = Session.objects.get(pk=session)
-    user_logged_in = s.get_decoded()
-    user_id = user_logged_in["_auth_user_id"]
-    _user = auth_user.objects.filter(id=user_id)
+    if(get_company_by_session(session)):
+        return "UNABLE"
+    
+    _user = get_user_by_session(session)
+
 
     company = Company(
         Name = json_data["company_name"],
@@ -73,7 +76,7 @@ def create_company(json_data, session):
     )
     company.save()
 
-    mapping = Mapping_Usuario_Empresa(User = _user, Company= company, Level= "Owner")
+    mapping = Mapping_Usuario_Empresa(User_id = _user, Company= company, Level= "Owner")
 
     mapping.save()
 
@@ -85,16 +88,32 @@ def prepare_data(session):
         #Return none. So controller can redirect
         return None
     
+    _user = get_user_by_session(session)
+
+    host = get_server_host()
+    return {
+        "server" : host,
+        "current_user" : _user
+    }
+
+    
+def get_user_by_session(session):
+    print("aqui aquiu aqui")
+    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]
-    print(user_logged_in["_auth_user_id"])
-    if (user_logged_in != None):
-        host = get_server_host()
-        return {
-            "server" : host,
-            "current_user" : user_logged_in
-        }
-    return None
+    _user = auth_user.objects.filter(id=user_id)
+    return user_id
 
-    
+def get_company_by_session(session):
+    print("aqui aquiu aqui")
+    print(session)
+    s = Session.objects.get(pk=session)
+    user_logged_in = s.get_decoded()
+    _user_id = user_logged_in["_auth_user_id"]
+    try:
+        mapping = Mapping_Usuario_Empresa.objects.filter(User_id = _user_id ).get()
+        return True
+    except:
+        return False

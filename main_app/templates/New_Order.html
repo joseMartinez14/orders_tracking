@@ -56,29 +56,37 @@
 
                     <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
                         <i class="fas fa-check-square me-1"></i>
-                        <u>Add order</u>
+                        <u>Add order </u>
                       </p>
-
+                      {{company_process}}
+                      {{company_clients}}
                     <div class="pb-2">
                     <div class="card">
                         <div class="card-body">
-                        <div class="d-flex flex-column">
-                            <label for="client_name_field" class="form-label form-control-lg">Client:</label>
-                            <fieldset disabled>
-                            <input type="text" class="form-control form-control-lg" id="client_name_field"  placeholder="Select client to display name">
-                            </fieldset>
+                            <div class="d-flex flex-column">
+                                <label for="client_name_field" class="form-label form-control-lg">Client:</label>
+                                <fieldset disabled>
+                                <input type="text" class="form-control form-control-lg" id="client_name_field"  placeholder="Select client to display name">
+                                </fieldset>
 
-                            <div class="d-flex flex-row">
-                                <button type="button" class="btn mt-3 btn-primary" id="submit_buttom">Open client list</button>
-                                <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new client</button>
+                                <div class="d-flex flex-row">
+                                    <button type="button" class="btn mt-3 ms-3 btn-primary" id="submit_buttom">Open client list</button>
+                                    <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new client</button>
+                                </div>
+
+                                <label for="order_name_field" class="form-label form-control-lg mt-3">Select process:</label>
+                                <select class="form-select" aria-label="Default select example">
+                                  {% for process in company_process %}
+                                    <option value="{{process.id}}">{{process.Process_Name}}</option>
+                                  {% endfor %}
+                                </select>
+                                <div class="d-flex flex-row">
+                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
+                                </div>
+                                <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
+                                <textarea  class="form-control form-control-lg" id="order_description_field"
+                                placeholder="Optional"></textarea>
                             </div>
-
-                            <label for="order_name_field" class="form-label form-control-lg mt-3">Select process:</label>
-                            <input type="text" class="form-control form-control-lg" id="order_name_field">
-                            <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
-                            <textarea  class="form-control form-control-lg" id="order_description_field"
-                            placeholder="Optional"></textarea>
-                        </div>
                         </div>
                     </div>
                     </div>
@@ -87,8 +95,10 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Launch demo modal
                     </button>
-
-                    
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_client_modal">
+                      Launch demo modal
+                  </button>
 
                 </div>
               </div>
@@ -116,11 +126,9 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>Cellphone</th>
+                        <th>Email</th>
+                        <th>Select</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,37 +137,26 @@
                         <td>Regional Director</td>
                         <td>Edinburgh</td>
                         <td>51</td>
-                        <td>2008-11-13</td>
-                        <td>$183,000</td>
                     </tr>
                     <tr>
                         <td>Michael Bruce</td>
                         <td>Javascript Developer</td>
                         <td>Singapore</td>
                         <td>29</td>
-                        <td>2011-06-27</td>
-                        <td>$183,000</td>
                     </tr>
                     <tr>
                         <td>Donna Snider</td>
                         <td>Customer Support</td>
                         <td>New York</td>
                         <td>27</td>
-                        <td>2011-01-25</td>
-                        <td>$112,000</td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
-                    </tr>
-                </tfoot>
             </table>
+
+            <div class="form-outline mb-3" style="width: 100%; max-width: 22rem">
+              <input type="text" id="phone" class="form-control" data-mdb-input-mask="+48 999-999-999" />
+              <label class="form-label" for="phone">Phone number with country code</label>
+            </div>
         </div>
       </div>
     </div>
@@ -167,7 +164,32 @@
   
 
 
+    <!-- Modal -->
+    <div class="modal fade" id="add_client_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" >Add new client</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {% include 'add_client_modal.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+
+
 <script>
+
+    var user = "{{current_user}}"
+    console.log(user)
+    var process = "{{company_process}}"
+    console.log(process)
+
     $(document).ready(function() {
         var table = $('#example').DataTable({
             searchPanes: false

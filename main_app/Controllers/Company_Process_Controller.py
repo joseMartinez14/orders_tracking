@@ -37,11 +37,14 @@ class Company_Process_Controller(APIView):
         x = json.loads(request.body)
         print("This is the body")
         print(x)
+        
+        result = insert_process(x, session)
     
         try:
-            result = insert_process(x, session)
             if (result is None):
                 return redirect('main_app:Login')
+            elif(result == "COMPANY_UNAVAILABLE"):
+                return Response({}, status=status.HTTP_302_FOUND) 
             return Response({}, status=status.HTTP_200_OK)
         except:
             print("An exception occurred") 
@@ -65,29 +68,22 @@ def insert_process(json_data, session):
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]
-    _user = auth_user.objects.filter(id=user_id)
 
-    company = Mapping_Usuario_Empresa.objects.filter(User = _user).get()
-
-    print("Aaqui esta la empresa!!!")
+    try:
+        mapping = Mapping_Usuario_Empresa.objects.filter(User_id = user_id).values()
+        company_id = mapping[0]["Company_id"]
+        print("company_id")
+        print(company_id)
+        company = Company.objects.filter(id = company_id).values()[0]
+    except:
+        return "COMPANY_UNAVAILABLE"
+    
     print(company)
-
-    return None
-
-    company = Company(
-        Name = "Segunda Compañia ejemplo",
-        Description = "Esta seria la descripcion de ejemplo",
-        membership = True,
-        Creation_date = datetime.now(),
-        Last_membership_update = datetime.now()
-    )
-
-    company.save()
-
+    
     company_process = Company_Process(
         Process_Name = json_data["process_name"],
         Description = json_data["process_description"],
-        Company = company
+        Company_id = company["id"]
     )
 
     company_process.save()
@@ -102,6 +98,8 @@ def insert_process(json_data, session):
         )
 
         temp_step.save()
+    
+    return "GOOD"
 
 
 

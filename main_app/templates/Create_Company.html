@@ -110,11 +110,20 @@
               },
               error: function(status, error){
                 console.log(error)
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'No se pudo ingresar con exito'
-                })
+                console.log(status)
+                if(status.status == 302){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Your already own a company'
+                  })
+                } else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se pudo ingresar con exito'
+                  })
+                }
               }
           });
         }catch(err){
