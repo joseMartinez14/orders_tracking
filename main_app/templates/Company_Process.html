@@ -38,6 +38,7 @@
                     <u>Add new process</u>
                   </p>
 
+
                   <div class="pb-2">
                     <div class="card">
                       <div class="card-body">
@@ -170,6 +171,10 @@
 <script>
     
     var server = "{{server}}"
+    var user_logged = "{{current_user}}"
+
+    console.log("current_user")
+    console.log(user_logged)
 
     var steps_data = [
       {
@@ -239,11 +244,19 @@
                 console.log("Login no fue exitoso")
                 console.log(error)
                 console.log(status.status)
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'No se pudo ingresar con exito'
-                })
+                if(status.status == 302){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'No company linked',
+                    text: 'Please request the owner to add you. Or create your company to add a new process'
+                  })
+                } else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se pudo ingresar con exito'
+                  })
+                }
               }
           });
         }catch(err){

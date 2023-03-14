@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
 # Create your models here.
@@ -33,29 +34,37 @@ class Company(models.Model):
 
 class Mapping_Usuario_Empresa(models.Model):
     #ID implicito
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     Company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    Level = models.CharField(max_length=10, null=False) #Esto podria ser una normmalized table. Admin or member
+    Level = models.CharField(max_length=10, null=False) #Esto podria ser una normmalized table. Owner, Admin or member
 
 class Company_Process(models.Model):
     #ID Implicito
-    Process_Name = models.CharField(max_length=20, null=False)
+    Process_Name = models.CharField(max_length=70, null=False)
     Description = models.CharField(max_length=150, null=False)
     Company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
 class Company_Process_step_template(models.Model):
     #ID Implicito
-    Step_Name = models.CharField(max_length=20, null=False)
+    Step_Name = models.CharField(max_length=50, null=False)
     Step_Order_Number = models.IntegerField(null=False) #Este es el orden en que va el step si es el primero o ultimo
     Description = models.CharField(max_length=150, null=False)
     Company_Process = models.ForeignKey(Company_Process, on_delete=models.CASCADE)
+    
+class Company_Client(models.Model):
+    #ID Implicito
+    Name = models.CharField(max_length=50, null=False)
+    Cellphone = models.CharField(max_length=25, null=False)
+    Email = models.CharField(max_length=70, null=False)
+    Address = models.CharField(max_length=200, null=False)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
 class Company_Order(models.Model):
     #ID Implicito
     Company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    Client = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Client = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     Date_Received = models.DateTimeField(auto_now=False, null=False)
-    Description = models.CharField(max_length=150, null=False)
+    Description = models.CharField(max_length=500, null=False)
     Status = models.CharField(max_length=10, null=False)
 
 class Process_Step_Client(models.Model):
@@ -65,12 +74,6 @@ class Process_Step_Client(models.Model):
     Notes = models.CharField(max_length=100, null=True)
     Status = models.CharField(max_length=10, null=False)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['Company_Process_step_template', 'Order'], name='unique_step_CompanyOrder_combination'
-            )
-        ]
 
 
 

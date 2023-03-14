@@ -10,8 +10,11 @@ from main_app.config import get_server_host
 from rest_framework import status
 from rest_framework.response import Response
 from datetime import datetime
+from django.contrib.auth.models import User as auth_user
+from django.contrib.auth.hashers import make_password
 
 from main_app.models import User, Session
+
 
 
 class Register_Controller(APIView):
@@ -31,57 +34,47 @@ class Register_Controller(APIView):
 
         x = json.loads(request.body)
 
-        if (register_user(x, request.session.session_key) is True):
-            print("Tiene que ser successfully ")
-            return Response({}, status=status.HTTP_200_OK)
+        result = register_user(x)
+        try:
+            if(result == "username_existis"):
+                return Response({"message":"Username already exists"}, status=status.HTTP_302_FOUND)
+            elif(result == "success"):
+                return Response({}, status=status.HTTP_200_OK)
+        except:
+            print("Esta mierda murio") 
+            return Response({}, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
     def delete(self, request):
         pass
 
-def register_user(data, session_key):
+def register_user(data):
 
     print(data)
 
-    print("THis is the session")
-    print(session_key)
+    if ( auth_user.objects.filter(username = data["username"]).exists()
+        or 
+        auth_user.objects.filter(email = data["email"]).exists()):
+        return "username_existis"
 
-    existing_user = User.objects.filter(Email = data["email"]).values()
-    print("Que encontro?")
-    print(existing_user)
-    if bool(existing_user):
-        return False
-    print("Vamos a guardar la mierda")
+    new_user = auth_user.objects.create_user(data["username"])
+    hash_password = make_password(data["password"])
+    new_user.password = hash_password
+    new_user.email = data["email"]
+    new_user.first_name = data["name"]
+    new_user.last_name = data["lastname"]
+    new_user.save()
+
     user = User(
             Email= data["email"],
             Username= data["username"] ,
-            Password= data["password"] ,
+            Password= "Se va a quitar" ,
             Name= data["name"],
             Birthdate= data["birthdate"]
             )
-    user.save()    
-
-    if session_key != None:
-        now = datetime.now()
-        session_obj = Session (
-            session_key = session_key,
-            user_email = user.Username,
-            creation_date = now,
-            expire_date = datetime(
-                now.year + 1,
-                now.month,
-                now.day,
-                now.hour,
-                now.minute,
-                now.second,
-                now.microsecond
-            )
-        )
-        session_obj.save()
-
-
-    return True
+    user.save()
+    return "success"    
 
 def prepare_data():
     host = get_server_host()
