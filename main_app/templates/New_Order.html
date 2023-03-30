@@ -11,34 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
      <!--Import jQuery before export.js-->
      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
-
-     <!--Data Table-->
-     <script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-     <script type="text/javascript"  src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
- 
-     <!--Export table buttons-->
-     <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js" ></script>
-     <script type="text/javascript"  src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
-     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
-
-     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.1.0/css/searchPanes.bootstrap4.min.css"/>
-
-     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css"/>
-
-    
-    <script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.1.0/js/dataTables.searchPanes.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.1.0/js/searchPanes.bootstrap4.min.js"></script>
  
 
     <link rel="stylesheet" href="{% static 'css/Example.css' %} ?{% cache_bust %}">
     </Head>
 
+
+    <style>
+      .my-custom-scrollbar {
+        position: relative;
+        height: 600px;
+        overflow: auto;
+      }
+      .table-wrapper-scroll-y {
+        display: block;
+      }
+    </style>
 
 
 <body>
@@ -58,8 +50,6 @@
                         <i class="fas fa-check-square me-1"></i>
                         <u>Add order </u>
                       </p>
-                      {{company_process}}
-                      {{company_clients}}
                     <div class="pb-2">
                     <div class="card">
                         <div class="card-body">
@@ -69,18 +59,18 @@
                                 <input type="text" class="form-control form-control-lg" id="client_name_field"  placeholder="Select client to display name">
                                 </fieldset>
 
-                                <div class="d-flex flex-row">
-                                    <button type="button" class="btn mt-3 ms-3 btn-primary" id="submit_buttom">Open client list</button>
-                                    <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new client</button>
+                                <div class="d-flex flex-row-reverse">
+                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#add_client_modal" >Add new client</button>
+                                  <button type="button" class="btn mt-3 ms-3 btn-primary" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#client_list_modal_id">Open client list</button>
                                 </div>
 
                                 <label for="order_name_field" class="form-label form-control-lg mt-3">Select process:</label>
-                                <select class="form-select" aria-label="Default select example">
+                                <select id="process_selector" class="form-select" aria-label="Default select example">
                                   {% for process in company_process %}
                                     <option value="{{process.id}}">{{process.Process_Name}}</option>
                                   {% endfor %}
                                 </select>
-                                <div class="d-flex flex-row">
+                                <div class="d-flex flex-row-reverse">
                                   <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
                                 </div>
                                 <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
@@ -91,14 +81,9 @@
                     </div>
                     </div>
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
-                    </button>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_client_modal">
-                      Launch demo modal
-                  </button>
+                    <div class=" d-flex justify-content-center">
+                      <button type="button" class="btn mt-3 btn-success" id="submit_order_buttom">Submit new order</button>
+                    </div>
 
                 </div>
               </div>
@@ -114,15 +99,19 @@
 
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="client_list_modal_id" tabindex="-1" aria-labelledby="client_list_modal_id" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title">List of clients</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <table id="example" class="table table-striped nowrap" style="width:100%">
+          
+            <input class="form-control" id="search_client_input" type="text" placeholder="Search..">
+            <br>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table id="client_list" class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -132,31 +121,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Shad Decker</td>
-                        <td>Regional Director</td>
-                        <td>Edinburgh</td>
-                        <td>51</td>
-                    </tr>
-                    <tr>
-                        <td>Michael Bruce</td>
-                        <td>Javascript Developer</td>
-                        <td>Singapore</td>
-                        <td>29</td>
-                    </tr>
-                    <tr>
-                        <td>Donna Snider</td>
-                        <td>Customer Support</td>
-                        <td>New York</td>
-                        <td>27</td>
-                    </tr>
+                  {% for client in company_clients %}
+                  <tr>
+                    <td>{{client.Name}}</td>
+                    <td>{{client.Cellphone}}</td>
+                    <td>{{client.Email}}</td>
+                    <td>
+                      <input type="image"
+                      id="myimage"
+                      style="height:50px;width:50px;"
+                      src="{% static 'imagenes/touchscreen.png' %}"
+                      onclick="select_client_from_list('{{client.id}}', '{{client.Name}}' )"
+                      />
+                    </td>
+                  </tr>
+                  {% endfor %}
                 </tbody>
             </table>
-
-            <div class="form-outline mb-3" style="width: 100%; max-width: 22rem">
-              <input type="text" id="phone" class="form-control" data-mdb-input-mask="+48 999-999-999" />
-              <label class="form-label" for="phone">Phone number with country code</label>
-            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="close_client_list_modal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -165,7 +150,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="add_client_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal fade" id="add_client_modal"  tabindex="-1" aria-labelledby="add_client_modal" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
@@ -173,31 +159,247 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            {% include 'add_client_modal.html' %}
+            {% include 'add_client_modal.html'%}
           </div>
-        </div>
+          <div class="modal-footer">
+            <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="save_client_button" class="btn btn-primary">Save client</button>
+          </div>
       </div>
     </div>
     
 
-
-
-
 <script>
 
     var user = "{{current_user}}"
+    console.log("user")
     console.log(user)
     var process = "{{company_process}}"
+    console.log("process")
     console.log(process)
 
-    $(document).ready(function() {
-        var table = $('#example').DataTable({
-            searchPanes: false
+    $(document).ready(function(){
+      $("#search_client_input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#client_list tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
-        table.searchPanes.container().prependTo(table.table().container());
-        table.searchPanes.resizePanes();
-        
-    });
+      });
+  });
+
+  main()
+
+  client_name_modal_field = $("#client_name_modal_field")
+  client_cellphone_modal_field = $("#client_cellphone_modal_field")
+  client_email_modal_field = $("#client_email_modal_field")
+  client_address_modal_field = $("#client_address_modal_field")
+
+  selected_client_id = null
+  
+  function main(){
+      $("#client_name_field").val("")
+      $("#save_client_button").on("click", function(){save_new_client()});
+      $("#submit_order_buttom").on("click", function(){submit_new_order()});
+
+  }
+
+  function submit_new_order(){
+
+    if(!validate_order_entries()){
+      return
+    }
+    option_selected = $("#process_selector").val()
+    order_description = $("#order_description_field").val()
+
+    const csrftoken = getCookie('csrftoken') 
+
+    var dat = {
+      'process_id' : option_selected,
+      'client_id' : selected_client_id,
+      'order_description' : order_description
+    }
+
+    try{
+      $.ajax({
+          url: "/orders_manager/create_order/",
+          headers: {'X-CSRFToken': csrftoken},
+          type: "PUT",
+          dataType: 'json',
+          data: JSON.stringify(dat) ,
+          success: function (result) {
+            Swal.fire(
+                'Ready!',
+                `Order added. Order number: ${result.order_id}`,
+                'success'
+            )
+          },
+          error: function(status, error){
+            console.log(error)
+            console.log(status)
+            if(status.status == 302){
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please create a company before'
+              })
+            } else if (status.status == 307){
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Browser error please refresh and try again'
+              })
+            } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Not able to create the order'
+                })
+            }
+          }
+      });
+    }catch(err){
+      console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Connection with server failed'
+      })
+    }
+
+  }
+
+  function validate_order_entries(){
+    option_selected = $("#process_selector").val()
+
+    if (option_selected == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select or add a step by step process for this order'
+      })
+      return false
+    }
+    else if (selected_client_id == null){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select or add a client for this order'
+      })
+      return false
+    }
+    return true
+  }
+
+
+  function save_new_client(){
+
+    if (validate_client_input() == false){
+        return
+      }
+
+    const csrftoken = getCookie('csrftoken') 
+
+    var dat = {
+      'client_name':client_name_modal_field.val() ,
+      'client_cellphone':client_cellphone_modal_field.val(),
+      'client_email':client_email_modal_field.val(),
+      'client_address':client_address_modal_field.val()
+    }
+
+    try{
+      $.ajax({
+          url: "/orders_manager/users/",
+          headers: {'X-CSRFToken': csrftoken},
+          type: "PUT",
+          dataType: 'json',
+          data: JSON.stringify(dat) ,
+          success: function (result) {
+            Swal.fire(
+                'Ready!',
+                'Client added',
+                'success'
+            )
+            console.log("Deberia dar el nuevo usuario id")
+            console.log(result.client_id)
+            selected_client_id = result.client_id
+            $("#close_client_modal_button").click()
+            $("#client_name_field").val(result.client_name)
+          },
+          error: function(status, error){
+            console.log(error)
+            console.log(status)
+            if(status.status == 302){
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Client already exists on your company'
+              })
+            } else if (status.status == 307){
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Browser error please refresh and try again'
+              })
+            } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Not able to insert client'
+                })
+            }
+          }
+      });
+    }catch(err){
+      console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Connection with server failed'
+      })
+    }
+  }
+
+  function select_client_from_list(client_id, client_name){
+    console.log("select_client_from_list")
+    console.log("***")
+    console.log(client_id)
+    selected_client_id = client_id
+    $("#client_name_field").val(client_name)
+    $("#close_client_list_modal").click()
+  }
+
+  function validate_client_input(){
+    client_name_modal_field = $("#client_name_modal_field")
+    client_cellphone_modal_field = $("#client_cellphone_modal_field")
+    client_email_modal_field = $("#client_email_modal_field")
+    client_address_modal_field = $("#client_address_modal_field")
+    if (
+      client_name_modal_field.val() == "" ||
+      client_cellphone_modal_field.val() == "" ||
+      client_email_modal_field.val() == ""
+      ){
+        Swal.fire('Fill client name, cellphone and email please')
+        return false
+      }
+      return true
+  }
+
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue; 
+    }
+
 </script>
 
 

@@ -34,8 +34,9 @@ class Login_Controller(APIView):
         print("Got to post on Test_Controller")
         x = json.loads(list(request.data.dict().keys())[0])
         print(x)
+        login_user = make_login(x["usuario"], x["contrasenna"])
         try:
-            login_user = make_login(x["usuario"], x["contrasenna"])
+            #login_user = make_login(x["usuario"], x["contrasenna"])
             if(login_user is not None):
                 login(request, login_user)
                 response = Response({}, status=status.HTTP_200_OK)
@@ -47,13 +48,11 @@ class Login_Controller(APIView):
         return Response({}, status=status.HTTP_400_BAD_REQUEST)    
     
     def put(self, request):
-        print("This is puta")
+        print("This is put")
         pass
 
     def delete(self, request):
         pass
-
-
 
 
 def prepare_login_data():
@@ -64,8 +63,6 @@ def prepare_login_data():
 
 
 def get_user_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]
@@ -75,9 +72,13 @@ def get_user_by_session(session):
 
 
 def make_login( email:str, password:str ):
-
+    
+    #Check if is email
+    _user = auth_user.objects.filter(email = email).get()
+    if _user is not None:
+        data = authenticate(username=_user.username, password=password)
+        return data
     data = authenticate(username=email, password=password)
-    print("Siiiiiii la puta madreeee")
     return data
 
 

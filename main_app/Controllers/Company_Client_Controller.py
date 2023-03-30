@@ -12,38 +12,34 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User as auth_user
 
 
-from main_app.models import Company, Mapping_Usuario_Empresa
+from main_app.models import Company, Mapping_Usuario_Empresa, Company_Client
 
 
-class Company_Controller(APIView):
+class Company_Client_Controller(APIView):
 
     def get(self, request):
-        #I guess I need to check cache and to see if is logged in or session?
-        template = loader.get_template('Create_Company.html')
-        session = request.COOKIES.get("sessionid","")
-        data = prepare_data(session)
-        if (data is None):
-             return redirect('main_app:Login')
-        return HttpResponse(template.render(data, request))
+        pass
     
     def post(self, request):
         pass
 
     def put(self, request):
-        print("Got to post on Company_Controller put")
+        print("Got to post on Company_Client_Controller put")
         session = request.COOKIES.get("sessionid","")
         x = json.loads(request.body)
-        print("This is the body")
-        print(x)
 
-        print("This is the data")
-        print(request.data)
+        get_company_by_session(session)
 
         try:
-            result = create_company(x, session)
-            if(result == 'UNAVAILABLE'):
+            result = create_company_client(x, session)
+            if (result is None):
+                return redirect('main_app:Login')
+            if (result == "EXISTS"):
                 return Response({}, status=status.HTTP_302_FOUND)
-            return Response({}, status=status.HTTP_200_OK)
+            if (result == "UNAVAILABLE"):
+                return Response({}, status=status.HTTP_307_TEMPORARY_REDIRECT)
+
+            return Response({"client_id": result.id, "client_name": result.Name}, status=status.HTTP_200_OK)
         except:
             print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -53,32 +49,42 @@ class Company_Controller(APIView):
         pass
 
 
-def create_company(json_data, session):
+def create_company_client(json_data, session):
     if(session == "" or session is None):
         #Return none. So controller can redirect
         return None
-    
-    if(get_company_by_session(session)):
+    company = get_company_by_session(session)
+    if(company is None):
+        print("Company is None")
+        print(company)
         return "UNAVAILABLE"
     
     _user = get_user_by_session(session)
 
+    if not verify_client(json_data["client_email"], company["id"]):
+        return "EXISTS"
 
-    company = Company(
-        Name = json_data["company_name"],
-        Description = json_data["company_description"],
-        membership = True,
-        Creation_date = datetime.now(),
-        Last_membership_update = datetime.now()
+    company_user = Company_Client(
+        Name = json_data["client_name"],
+        Cellphone = json_data["client_cellphone"],
+        Email = json_data["client_email"],
+        Address = json_data["client_address"],
+        Company_id = company["id"]
     )
-    company.save()
 
-    mapping = Mapping_Usuario_Empresa(User_id = _user, Company= company, Level= "Owner")
+    company_user.save()
 
-    mapping.save()
-
+    return company_user
 
 
+def verify_client(client_email, company_id):
+    try:
+        client = Company_Client.objects.filter(Email = client_email, Company_id = company_id)
+        if not client:
+            return True
+        return False
+    except:
+        return True
 
 def prepare_data(session):
     if(session == "" or session is None):
@@ -104,13 +110,14 @@ def get_user_by_session(session):
     return user_id
 
 def get_company_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     _user_id = user_logged_in["_auth_user_id"]
+
     try:
-        mapping = Mapping_Usuario_Empresa.objects.filter(User_id = _user_id ).get()
-        return True
+        mapping = Mapping_Usuario_Empresa.objects.filter(User_id = _user_id ).values()
+        company_id = mapping[0]["Company_id"]
+        company = Company.objects.filter(id = company_id).values()[0]
+        return company
     except:
-        return False
+        return None
