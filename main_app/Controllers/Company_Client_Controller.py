@@ -18,17 +18,18 @@ from main_app.models import Company, Mapping_Usuario_Empresa, Company_Client
 class Company_Client_Controller(APIView):
 
     def get(self, request):
-        pass
+        template = loader.get_template('Company_Clients_CRUD.html')
+        session = request.COOKIES.get("sessionid","")
+        data = prepare_data(session)
+
+        if (data is None):
+             return redirect('main_app:Login')
+
+        return HttpResponse(template.render(data, request))
     
     def post(self, request):
-        pass
-
-    def put(self, request):
-        print("Got to post on Company_Client_Controller put")
         session = request.COOKIES.get("sessionid","")
-        x = json.loads(request.body)
-
-        get_company_by_session(session)
+        x = json.loads(list(request.data.dict().keys())[0])
 
         try:
             result = create_company_client(x, session)
@@ -43,10 +44,45 @@ class Company_Client_Controller(APIView):
         except:
             print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        print("Got to post on Company_Client_Controller put")
+        session = request.COOKIES.get("sessionid","")
+        x = json.loads(request.body)
+
+        try:
+            update_company_client(x)
+            return Response({}, status=status.HTTP_200_OK)
+        except:
+            print("An exception occurred") 
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
     def delete(self, request):
-        pass
+        print("Got to post on Company_Client_Controller delete")
+        session = request.COOKIES.get("sessionid","")
+        x = json.loads(request.body)
+        try:
+            delete_company_client(x)
+            return Response({}, status=status.HTTP_200_OK)
+        except:
+            print("An exception occurred") 
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def update_company_client(json_data):
+    client = Company_Client.objects.get(id = json_data["client_id"])
+
+    client.Name = json_data["client_name"]
+    client.Cellphone = json_data["client_cellphone"]
+    client.Email = json_data["client_email"]
+    client.Address = json_data["client_address"]
+
+    client.save()
+
+
+def delete_company_client(json_data):
+    Company_Client.objects.filter(id = json_data["client_id"]).delete()
 
 
 def create_company_client(json_data, session):
@@ -91,13 +127,19 @@ def prepare_data(session):
         #Return none. So controller can redirect
         return None
     
-    _user = get_user_by_session(session)
+    company_clients = []
 
-    host = get_server_host()
+    company = get_company_by_session(session)
+
+    try:
+        company_clients = list(Company_Client.objects.filter(Company_id = company["id"]).values())
+    except:
+        company_clients = None
+
     return {
-        "server" : host,
-        "current_user" : _user
+        "company_clients": company_clients
     }
+
 
     
 def get_user_by_session(session):

@@ -21,7 +21,7 @@ urlpatterns = [
     path('create_process/', Company_Process_Controller.as_view(), name = 'create_process'),
     path('create_company/', Company_Controller.as_view(), name = 'create_company'),
     path('create_order/', Order_Controller.as_view(), name = 'order_controller'),
-    path('users/', Company_Client_Controller.as_view(), name = 'client_controller'),
+    path('clients/', Company_Client_Controller.as_view(), name = 'client_controller'),
     path('order_details/', Client_Order_Controller.as_view(), name = 'Client_Order_Controller'),
 ]
 
