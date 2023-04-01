@@ -12,61 +12,36 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User as auth_user
 
 
-from main_app.models import Company, Mapping_Usuario_Empresa, Company_Client
+from main_app.models import Company, Mapping_Usuario_Empresa, Company_Client, Company_Process_step_template
 
 
-class Company_Client_Controller(APIView):
+class Steps_Template_Controller(APIView):
 
     def get(self, request):
-        template = loader.get_template('Company_Clients_CRUD.html')
-        session = request.COOKIES.get("sessionid","")
-        data = prepare_data(session)
-
-        if (data is None):
-             return redirect('main_app:Login')
-
-        return HttpResponse(template.render(data, request))
+        pass
     
     def post(self, request):
         session = request.COOKIES.get("sessionid","")
         x = json.loads(list(request.data.dict().keys())[0])
 
         try:
-            result = create_company_client(x, session)
-            if (result is None):
-                return redirect('main_app:Login')
-            if (result == "EXISTS"):
-                return Response({}, status=status.HTTP_302_FOUND)
-            if (result == "UNAVAILABLE"):
-                return Response({}, status=status.HTTP_307_TEMPORARY_REDIRECT)
-
-            return Response({"client_id": result.id, "client_name": result.Name}, status=status.HTTP_200_OK)
+            result = get_steps_template(x)
+            return Response(result, status=status.HTTP_200_OK)
         except:
             print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        print("Got to post on Company_Client_Controller put")
-        session = request.COOKIES.get("sessionid","")
-        x = json.loads(request.body)
-
-        try:
-            update_company_client(x)
-            return Response({}, status=status.HTTP_200_OK)
-        except:
-            print("An exception occurred") 
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        pass
     
 
     def delete(self, request):
-        print("Got to post on Company_Client_Controller delete")
-        x = json.loads(request.body)
-        try:
-            delete_company_client(x)
-            return Response({}, status=status.HTTP_200_OK)
-        except:
-            print("An exception occurred") 
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        pass
+
+
+
+def get_steps_template(json_data):
+    return Company_Process_step_template.objects.filter(Company_Process_id = json_data["process_id"]).values()
 
 
 def update_company_client(json_data):

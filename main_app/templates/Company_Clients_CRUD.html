@@ -56,6 +56,7 @@
                                             <th>Cellphone</th>
                                             <th>Email</th>
                                             <th>Address</th>
+                                            <th>Last order Date</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
@@ -67,6 +68,7 @@
                                         <td>{{client.Cellphone}}</td>
                                         <td>{{client.Email}}</td>
                                         <td>{{client.Address}}</td>
+                                        <td>Update Pendiente</td>
                                         <td>
                                             <input type="image"
                                             id="myimage"
@@ -115,7 +117,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" >Update client</h4>
+            <h4 class="modal-title" id="modal_title_id">Update client</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -172,6 +174,7 @@
     console.log(client_id)
     $("#save_client_button").hide()
     $("#update_client_button").show()
+    $("#modal_title_id").text("Update Client")
     selected_client_id = client_id
     client_name_modal_field.val(client_Name)
     client_cellphone_modal_field.val(client_cellphone)
@@ -232,6 +235,7 @@
   function clean_selection(){
     $("#update_client_button").hide()
     $("#save_client_button").show()
+    $("#modal_title_id").text("Add new client")
     selected_client_id = null
     client_name_modal_field.val("")
     client_cellphone_modal_field.val("")
@@ -325,8 +329,6 @@
             ).then((result) => {
               location.reload();
             })
-            console.log("Deberia dar el nuevo usuario id")
-            console.log(result.client_id)
             selected_client_id = result.client_id
             $("#close_client_modal_button").click()
           },

@@ -1,0 +1,578 @@
+
+{% load static %}
+{% load cache_bust %}
+<!DOCTYPE html>
+<html lang="es">
+
+    <Head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/Example.css' %} ?{% cache_bust %}">
+    </Head>
+
+    <style>
+      .my-custom-scrollbar {
+        position: relative;
+        height: 600px;
+        overflow: auto;
+      }
+      .table-wrapper-scroll-y {
+        display: block;
+      }
+    </style>
+
+<body>
+
+  <header>
+    {% include 'header_bar.html' with server=server %}
+  </header>
+
+  <section style="height: 1000px;">
+    <div class=" w-100 p-3 pt-5">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col">
+                <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                    <div class="card-body py-4 px-4 px-md-5">
+                        <div class="d-flex justify-content-center"><h3 >Processes</h3></div>
+                        <input class="form-control" id="search_process_input" type="text" placeholder="Search..">
+                        <br>
+                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                            <table id="process_list" class="table table-bordered table-striped" style="width:100%; height: 150%;">
+                                <thead>
+                                    <tr>
+                                        <th>Process Name</th>
+                                        <th>Description</th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for process in company_process %}
+                                    <tr>
+                                    <td>{{process.Process_Name}}</td>
+                                    <td>{{process.Description}}</td>
+                                    <td>
+                                        <input type="image"
+                                        id="myimage"
+                                        style="height:50px;width:50px;"
+                                        src="{% static 'imagenes/gear.png' %}"
+                                        onclick="select_process('{{process.id}}', '{{process.Process_Name}}', '{{process.Description}}', '{{process.Company_id}}')"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#add_update_process_modal"
+                                        />
+                                    </td>
+                                    <td>
+                                        <input type="image"
+                                        id="myimage"
+                                        style="height:50px;width:50px;"
+                                        src="{% static 'imagenes/bin.png' %}"
+                                        onclick="delete_process_confirmation('{{process.id}}', '{{process.Process_Name}}' )"
+                                        />
+                                    </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <br>
+
+                        <input type="image"
+                          id="myimage"
+                          style="height:70px;width:70px;"
+                          src="{% static 'imagenes/insert.png' %}"
+                          onclick="clean_selection()"
+                          data-bs-toggle="modal" 
+                          data-bs-target="#add_update_process_modal"
+                        />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+<div class="modal fade" id="add_update_process_modal"  tabindex="-1" aria-labelledby="add_update_process_modal" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
+          <i class="fas fa-check-square me-1"></i>
+          <u id="modal_title_id">Add new process</u>
+        </p>
+
+
+        <div class="pb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column">
+                  <label for="order_name_field" class="form-label form-control-lg">Process name:</label>
+                  <input type="text" class="form-control form-control-lg" id="order_name_field">
+                  <label for="order_description_field" class="form-label form-control-lg">Process description:</label>
+                  <textarea  class="form-control form-control-lg" id="order_description_field"
+                  placeholder="Optional"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="h3 mt-3 mb-3 pb-3 ttext-secondary">
+          <i class="fas fa-check-square me-1"></i>
+          <u>Add process steps</u>
+        </p>
+
+        <div class="pb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column">
+                  <label for="step_name_field" class="form-label form-control-lg">Step name:</label>
+                  <input type="text" class="form-control form-control-lg" id="step_name_field">
+                  <label for="step_description_field" class="form-label form-control-lg">Step description:</label>
+                  <textarea  class="form-control form-control-lg" id="step_description_field"
+                  placeholder="Optional (Clients will see it)"></textarea>
+                  <div class="mt-3">
+                    <button type="button" class="btn btn-primary" id="add_step_button">Add step</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <p class="h3 mt-3 mb-3 pb-3 text-secondary">
+          <i class="fas fa-check-square me-1"></i>
+          <u>Steps</u>
+        </p>
+
+        <div class="table-responsive">
+          <table id="steps_list" style="width:100%" class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Move Up</th>
+                <th>Move Down</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="close_process_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="update_process_button" class="btn btn-primary">Update process</button>
+        <button type="button" id="save_process_button" class="btn btn-primary">Add process</button>
+      </div>
+  </div>
+</div>
+
+<script>
+
+  $(document).ready(function(){
+        $("#search_process_input").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#process_list tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+    });
+
+    var steps_data = []
+
+    var lista = $("#steps_list")
+
+    var selected_process_id = null
+
+    main()
+    
+    function main(){
+      console.log(server)
+      console.log("Hello ooo bitch")
+
+      populate_steps_table()
+
+      $("#add_step_button").on("click", function(){add_new_step()})
+      $("#save_process_button").on("click", function(){add_new_process()})
+      $("#update_process_button").on("click", function(){update_process()})
+
+    }
+
+    function update_process(){
+      if (validate_input() == false){
+        return
+      }
+
+      var name = $("#order_name_field")
+      var description = $("#order_description_field")
+
+      var dat = {
+        'process_id' : selected_process_id,
+        'process_name':name.val() ,
+        'process_description':description.val(),
+        'steps': steps_data
+      }
+
+      const csrftoken = getCookie('csrftoken') 
+
+      try{
+          $.ajax({
+              url: "/orders_manager/create_process/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "PUT",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                Swal.fire(
+                  'Ready!',
+                  'Process added',
+                  'success'
+                ).then((result) => {
+                  location.reload();
+                })
+                $("#close_process_modal_button").click()
+              },
+              error: function(status, error){
+                console.log("Login no fue exitoso")
+                console.log(error)
+                console.log(status.status)
+                if(status.status == 302){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Access denied',
+                    text: 'This require an admin role'
+                  })
+                } else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Unable to update process'
+                  })
+                }
+              }
+          });
+        }catch(err){
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Connection to server failed'
+          })
+        }
+    }
+
+    function delete_process_confirmation(process_id, process_name){
+      Swal.fire({
+        title: "Do you want to delete process: " + process_name,
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          delete_process(process_id)
+        }
+      })
+    }
+
+    function delete_process(process_id){
+      var dat = {
+        'process_id': process_id
+      }
+
+      const csrftoken = getCookie('csrftoken') 
+
+      try{
+          $.ajax({
+              url: "/orders_manager/create_process/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "DELETE",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                Swal.fire(
+                  'Ready!',
+                  'Process deleted',
+                  'success'
+                ).then((result) => {
+                  location.reload();
+                })
+              },
+              error: function(status, error){
+                if(status.status == 302){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Order linked',
+                    text: 'Unable to delete process because there are orders linked to it'
+                  })
+                } else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Unable to delete process'
+                  })
+                }
+              }
+          });
+        }catch(err){
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Connection to server failed'
+          })
+        }
+    }
+      
+
+    function select_process(process_id, process_name, process_description, process_company_id){
+      console.log("entro a select_process")
+      select_steps(process_id)
+      selected_process_id = process_id
+      $("#save_process_button").hide()
+      $("#update_process_button").show()
+      $("#modal_title_id").text("Update Process")
+      $("#order_name_field").val(process_name)
+      $("#order_description_field").val(process_description)
+    }
+
+    function select_steps(process_id){
+
+      var dat = {'process_id':process_id}
+      const csrftoken = getCookie('csrftoken') 
+
+      try{
+          $.ajax({
+              url: "/orders_manager/steps_template/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "POST",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                console.log("aqui aqui aqui aqui los steps que recibi")
+                steps_data = []
+                result.forEach((step) => {
+                  console.log(step)
+                  steps_data.push({
+                    step_id: step.id,
+                    step_name: step.Step_Name,
+                    step_Order_Number: step.Step_Order_Number,
+                    description: step.Description
+                  })
+                })
+                steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+                populate_steps_table()
+              },
+              error: function(status, error){
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Unable to find process steps'
+                })
+              }
+          });
+        }catch(err){
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Connection to server failed'
+          })
+        }
+    }
+
+    function clean_selection(){
+      $("#update_process_button").hide()
+      $("#save_process_button").show()
+      $("#modal_title_id").text("Add new process")
+      $("#order_name_field").val("")
+      $("#order_description_field").val("")
+      steps_data = []
+      populate_steps_table()
+    }
+
+    function add_new_process(){
+      if (validate_input() == false){
+        return
+      }
+
+      var name = $("#order_name_field")
+      var description = $("#order_description_field")
+
+      var dat = {
+        'process_name':name.val() ,
+        'process_description':description.val(),
+        'steps': steps_data
+      }
+
+      const csrftoken = getCookie('csrftoken') 
+
+      try{
+          $.ajax({
+              url: "/orders_manager/create_process/",
+              headers: {'X-CSRFToken': csrftoken},
+              type: "POST",
+              dataType: 'json',
+              data: JSON.stringify(dat) ,
+              success: function (result) {
+                Swal.fire(
+                  'Ready!',
+                  'Process added',
+                  'success'
+                ).then((result) => {
+                  location.reload();
+                })
+                $("#close_process_modal_button").click()
+              },
+              error: function(status, error){
+                console.log("Login no fue exitoso")
+                console.log(error)
+                console.log(status.status)
+                if(status.status == 302){
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'No company linked',
+                    text: 'Please request the owner to add you. Or create your company to add a new process'
+                  })
+                } else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se pudo ingresar con exito'
+                  })
+                }
+              }
+          });
+        }catch(err){
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Connection to server failed'
+          })
+        }
+    }
+
+    function add_new_step(){
+      console.log("Entro a add_new_step")
+      var name = $("#step_name_field")
+      var description = $("#step_description_field")
+      if(name.val() == ""){
+        Swal.fire('Please fill the step name')
+        return 
+      }
+      var obj = {
+        step_id: -1,
+        step_name: name.val(),
+        step_Order_Number: steps_data.length +1,
+        description: description.val()
+      }
+      steps_data.push(obj)
+      populate_steps_table()
+      name.val("")
+      description.val("")
+    }
+
+
+    function populate_steps_table(){
+      console.log("Entro a populate_steps_table")
+      console.log(steps_data)
+      lista.empty();
+      steps_data.forEach((obj)=>{
+        console.log(obj)
+        var tr = $("<tr/>")
+        tr.html("<td>"+ obj.step_Order_Number + "</td>"+
+                "<td>"+ obj.step_name + "</td>"+
+                "<td>"+ obj.description + "</td>"+
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/up-arrow.png' %}' onclick='move_step_up("+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/down-arrow.png' %}' onclick='move_step_down("+obj.step_Order_Number+")'</td> " +
+                "<td> <input type='image' id='myimage' style='height:50px;width:50px;' src='{% static 'imagenes/bin.png' %}' onclick='delete_step("+obj.step_Order_Number+")'</td> " )
+        lista.append(tr);
+      })
+    }
+
+    function move_step_up( order){
+      if (order > 1){
+        steps_data[order -1].step_Order_Number = order - 1
+        steps_data[order -2].step_Order_Number = order
+        steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+        populate_steps_table()
+      }
+    }
+
+    function move_step_down(order){
+      if(order != steps_data.length){
+        steps_data[order -1].step_Order_Number = order + 1
+        steps_data[order].step_Order_Number = order 
+        steps_data.sort((first, second) => (first.step_Order_Number > second.step_Order_Number) ? 1 : -1)
+        populate_steps_table()
+        return true
+      }
+      return false
+
+    }
+
+    function delete_step( order){
+
+      steps_data.splice(order - 1, 1)
+      let length = steps_data.length
+      for (let i = 0; i < length; i++){
+        steps_data[i].step_Order_Number = i + 1
+      }
+      populate_steps_table()
+
+    }
+
+    function validate_input(){
+      var order_name = $("#order_name_field")
+      if (
+        order_name.val() == "" ||
+        steps_data.length < 1
+      ){
+        Swal.fire('Fill order name and at least 1 step')
+        return false
+      }
+      return true
+    }
+
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue; 
+    }
+</script>
+
+
+
+</html>
+
+
+
+
+
+
+
