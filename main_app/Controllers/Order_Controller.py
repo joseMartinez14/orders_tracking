@@ -14,6 +14,7 @@ from datetime import datetime
 from django.shortcuts import redirect
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User as auth_user
+import qrcode
 
 
 from main_app.models import (
@@ -86,9 +87,6 @@ def create_new_order(session, data):
     )
 
     order.save()
-
-    print("---- this is the order obj ----------")
-    print(order)
 
     steps = Company_Process_step_template.objects.filter(Company_Process_id=data["process_id"]).values()
 

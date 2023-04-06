@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
+
 # Create your models here.
 
 class User(models.Model):

@@ -8,6 +8,7 @@ from .Controllers.Order_Controller import Order_Controller
 from .Controllers.Company_Client_Controller import Company_Client_Controller
 from .Controllers.Client_Order_Controller import Client_Order_Controller
 from .Controllers.Steps_Template_Controller import Steps_Template_Controller
+from .Controllers.Orders_Maintanance_Controller import Orders_Maintanance_Controller
 
 
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('clients/', Company_Client_Controller.as_view(), name = 'client_controller'),
     path('order_details/', Client_Order_Controller.as_view(), name = 'Client_Order_Controller'),
     path('steps_template/', Steps_Template_Controller.as_view(), name = 'Steps_Template_Controller'),
+    path('orders_maintenance/', Orders_Maintanance_Controller.as_view(), name = 'Orders_Maintanance_controller'),
 ]
 
 
