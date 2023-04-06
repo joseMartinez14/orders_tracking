@@ -35,119 +35,81 @@
 
 <body>
 
-  <header>
-    {% include 'header_bar.html' with server=server %}
-  </header>
+    <header>
+        {% include 'header_bar.html' with server=server %}
+    </header>
 
-    <section>
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col">
-              <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
-                <div class="card-body py-4 px-4 px-md-5">
-
-                    <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
-                        <i class="fas fa-check-square me-1"></i>
-                        <u>Add order </u>
-                      </p>
-                    <div class="pb-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column">
-                                <label for="client_name_field" class="form-label form-control-lg">Client:</label>
-                                <fieldset disabled>
-                                <input type="text" class="form-control form-control-lg" id="client_name_field"  placeholder="Select client to display name">
-                                </fieldset>
-
-                                <div class="d-flex flex-row-reverse">
-                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#add_client_modal" >Add new client</button>
-                                  <button type="button" class="btn mt-3 ms-3 btn-primary" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#client_list_modal_id">Open client list</button>
-                                </div>
-
-                                <label for="order_name_field" class="form-label form-control-lg mt-3">Select process:</label>
-                                <select id="process_selector" class="form-select" aria-label="Default select example">
-                                  {% for process in company_process %}
-                                    <option value="{{process.id}}">{{process.Process_Name}}</option>
-                                  {% endfor %}
-                                </select>
-                                <div class="d-flex flex-row-reverse">
-                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
-                                </div>
-                                <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
-                                <textarea  class="form-control form-control-lg" id="order_description_field"
-                                placeholder="Optional"></textarea>
+    <section style="height: 1000px;">
+        <div class=" w-100 p-3 pt-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
+                            <div class="d-flex justify-content-center"><h3 >Clients</h3></div>
+                            <input class="form-control" id="search_client_input" type="text" placeholder="Search..">
+                            <br>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="client_list" class="table table-bordered table-striped" style="width:100%; height: 150%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Cellphone</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Last order Date</th>
+                                            <th>Update</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for client in company_clients %}
+                                        <tr>
+                                        <td>{{client.Name}}</td>
+                                        <td>{{client.Cellphone}}</td>
+                                        <td>{{client.Email}}</td>
+                                        <td>{{client.Address}}</td>
+                                        <td>Update Pendiente</td>
+                                        <td>
+                                            <input type="image"
+                                            id="myimage"
+                                            style="height:50px;width:50px;"
+                                            src="{% static 'imagenes/gear.png' %}"
+                                            onclick="select_client('{{client.id}}', '{{client.Name}}', '{{client.Cellphone}}', '{{client.Email}}', '{{client.Address}}' )"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#add_client_modal"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="image"
+                                            id="myimage"
+                                            style="height:50px;width:50px;"
+                                            src="{% static 'imagenes/bin.png' %}"
+                                            onclick="delete_client_confirmation('{{client.id}}', '{{client.Name}}' )"
+                                            />
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
+                            <br>
+
+                            <input type="image"
+                              id="myimage"
+                              style="height:70px;width:70px;"
+                              src="{% static 'imagenes/insert.png' %}"
+                              onclick="clean_selection()"
+                              data-bs-toggle="modal" 
+                              data-bs-target="#add_client_modal"
+                            />
+
                         </div>
                     </div>
-                    </div>
-
-                    <div class=" d-flex justify-content-center">
-                      <button type="button" class="btn mt-3 btn-success" id="submit_order_buttom">Submit new order</button>
-                    </div>
-
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 </body>
-
-
-
-
-
-  
-  <!-- Modal -->
-  <div class="modal fade" id="client_list_modal_id" tabindex="-1" aria-labelledby="client_list_modal_id" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">List of clients</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          
-            <input class="form-control" id="search_client_input" type="text" placeholder="Search..">
-            <br>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table id="client_list" class="table table-bordered table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Cellphone</th>
-                        <th>Email</th>
-                        <th>Select</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  {% for client in company_clients %}
-                  <tr>
-                    <td>{{client.Name}}</td>
-                    <td>{{client.Cellphone}}</td>
-                    <td>{{client.Email}}</td>
-                    <td>
-                      <input type="image"
-                      id="myimage"
-                      style="height:50px;width:50px;"
-                      src="{% static 'imagenes/touchscreen.png' %}"
-                      onclick="select_client_from_list('{{client.id}}', '{{client.Name}}' )"
-                      />
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="close_client_list_modal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
 
     <!-- Modal -->
     
@@ -155,7 +117,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" >Add new client</h4>
+            <h4 class="modal-title" id="modal_title_id">Update client</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -163,7 +125,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="save_client_button" class="btn btn-primary">Save client</button>
+            <button type="button" id="update_client_button" class="btn btn-primary">Update client</button>
+            <button type="button" id="save_client_button" class="btn btn-primary">Add client</button>
           </div>
       </div>
     </div>
@@ -187,7 +150,7 @@
       });
   });
 
-  main()
+  
 
   client_name_modal_field = $("#client_name_modal_field")
   client_cellphone_modal_field = $("#client_cellphone_modal_field")
@@ -199,29 +162,44 @@
   function main(){
       $("#client_name_field").val("")
       $("#save_client_button").on("click", function(){save_new_client()});
-      $("#submit_order_buttom").on("click", function(){submit_new_order()});
+      $("#update_client_button").on("click", function(){update_client()});
 
   }
 
-  function submit_new_order(){
+  main()
 
-    if(!validate_order_entries()){
-      return
-    }
-    option_selected = $("#process_selector").val()
-    order_description = $("#order_description_field").val()
+
+  function select_client(client_id, client_Name, client_cellphone, client_email, client_address){
+    console.log("client_id")
+    console.log(client_id)
+    $("#save_client_button").hide()
+    $("#update_client_button").show()
+    $("#modal_title_id").text("Update Client")
+    selected_client_id = client_id
+    client_name_modal_field.val(client_Name)
+    client_cellphone_modal_field.val(client_cellphone)
+    client_email_modal_field.val(client_email)
+    client_address_modal_field.val(client_address)
+  }
+
+  function update_client(){
+    if (validate_client_input() == false){
+        return
+      }
 
     const csrftoken = getCookie('csrftoken') 
 
     var dat = {
-      'process_id' : option_selected,
       'client_id' : selected_client_id,
-      'order_description' : order_description
+      'client_name':client_name_modal_field.val() ,
+      'client_cellphone':client_cellphone_modal_field.val(),
+      'client_email':client_email_modal_field.val(),
+      'client_address':client_address_modal_field.val()
     }
 
     try{
       $.ajax({
-          url: "/orders_manager/create_order/",
+          url: "/orders_manager/clients/",
           headers: {'X-CSRFToken': csrftoken},
           type: "PUT",
           dataType: 'json',
@@ -229,32 +207,19 @@
           success: function (result) {
             Swal.fire(
                 'Ready!',
-                `Order added. Order number: ${result.order_id}`,
+                'Client Updated',
                 'success'
-            )
+            ).then((result) => {
+              location.reload();
+            })
+            $("#close_client_modal_button").click()
           },
           error: function(status, error){
-            console.log(error)
-            console.log(status)
-            if(status.status == 302){
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please create a company before'
-              })
-            } else if (status.status == 307){
-                Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Browser error please refresh and try again'
-              })
-            } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'Not able to create the order'
-                })
-            }
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Not able to update client'
+            })
           }
       });
     }catch(err){
@@ -265,31 +230,74 @@
         text: 'Connection with server failed'
       })
     }
-
   }
 
-  function validate_order_entries(){
-    option_selected = $("#process_selector").val()
+  function clean_selection(){
+    $("#update_client_button").hide()
+    $("#save_client_button").show()
+    $("#modal_title_id").text("Add new client")
+    selected_client_id = null
+    client_name_modal_field.val("")
+    client_cellphone_modal_field.val("")
+    client_email_modal_field.val("")
+    client_address_modal_field.val("")
+  }
 
-    if (option_selected == null){
+  function delete_client_confirmation(client_id, client_name){
+    console.log("delete client")
+    Swal.fire({
+      title: "Do you want to delete client: " + client_name,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        delete_client(client_id)
+      }
+    })
+  }
+
+  function delete_client(client_id){
+    
+    const csrftoken = getCookie('csrftoken') 
+
+    var dat = {
+      'client_id':client_id
+    }
+
+    try{
+      $.ajax({
+          url: "/orders_manager/clients/",
+          headers: {'X-CSRFToken': csrftoken},
+          type: "DELETE",
+          dataType: 'json',
+          data: JSON.stringify(dat) ,
+          success: function (result) {
+            Swal.fire(
+                'Ready!',
+                'Client deleted',
+                'success'
+            ).then((result) => {
+              location.reload();
+            })
+          },
+          error: function(status, error){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Not able to delete client'
+            })
+          }
+      });
+    }catch(err){
+      console.log(err)
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Please select or add a step by step process for this order'
+        text: 'Connection with server failed'
       })
-      return false
     }
-    else if (selected_client_id == null){
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select or add a client for this order'
-      })
-      return false
-    }
-    return true
   }
-
 
   function save_new_client(){
 
@@ -318,12 +326,11 @@
                 'Ready!',
                 'Client added',
                 'success'
-            )
-            console.log("Deberia dar el nuevo usuario id")
-            console.log(result.client_id)
+            ).then((result) => {
+              location.reload();
+            })
             selected_client_id = result.client_id
             $("#close_client_modal_button").click()
-            $("#client_name_field").val(result.client_name)
           },
           error: function(status, error){
             console.log(error)

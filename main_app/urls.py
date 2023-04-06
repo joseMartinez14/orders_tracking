@@ -5,6 +5,12 @@ from .Controllers.Register_Controller import Register_Controller
 from .Controllers.Company_Process_Controller import Company_Process_Controller
 from .Controllers.Company_Controller import Company_Controller
 from .Controllers.Order_Controller import Order_Controller
+from .Controllers.Company_Client_Controller import Company_Client_Controller
+from .Controllers.Client_Order_Controller import Client_Order_Controller
+from .Controllers.Steps_Template_Controller import Steps_Template_Controller
+from .Controllers.Orders_Maintanance_Controller import Orders_Maintanance_Controller
+
+
 
 app_name = "main_app"
 
@@ -16,7 +22,11 @@ urlpatterns = [
     path('register/', Register_Controller.as_view(), name = 'Register'),
     path('create_process/', Company_Process_Controller.as_view(), name = 'create_process'),
     path('create_company/', Company_Controller.as_view(), name = 'create_company'),
-    path('create_order/', Order_Controller.as_view(), name = 'order_controller')
+    path('create_order/', Order_Controller.as_view(), name = 'order_controller'),
+    path('clients/', Company_Client_Controller.as_view(), name = 'client_controller'),
+    path('order_details/', Client_Order_Controller.as_view(), name = 'Client_Order_Controller'),
+    path('steps_template/', Steps_Template_Controller.as_view(), name = 'Steps_Template_Controller'),
+    path('orders_maintenance/', Orders_Maintanance_Controller.as_view(), name = 'Orders_Maintanance_controller'),
 ]
 
 

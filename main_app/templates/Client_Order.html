@@ -144,102 +144,62 @@
 <body>
     <section>
         <div class="container px-1 px-md-4 py-5 mx-auto">
-            <div class="card">
-                <div class="row d-flex justify-content-between px-3 top">
-                    <div class="d-flex">
-                        <h5>ORDER <span class="text-primary font-weight-bold">#Y34XDHR</span></h5>
+            <div class="card mx-auto">
+                <div class="card-body mx-5">
+                    <div class="d-flex my-1">
+                        <h3>Company: {{company.Name}} </h3>
                     </div>
-                    <div class="d-flex flex-column text-sm-right">
-                        <p class="font-weight-bold">Expected Arrival <span>01/12/19</span></p>
-                        <p>USPS 234094567242423422898 USPS 234094567242423422898 USPS 234094567242423422898 USPS 234094567242423422898 USPS 234094567242423422898 USPS 234094567242423422898 USPS 234094567242423422898</p>
+                    <div class="d-flex my-1">
+                        <h3>Client: {{client.Name}} </h3>
                     </div>
-                </div>
-                <!-- Add class 'active' to progress -->
-                <!--
-                <div class="col d-flex justify-content-center">
-                    <div class="col-12">
-                    <ul id="progressbar" class="text-center">
-                        <li class="active step0"></li>
-                        <li class="active step0"></li>
-                        <li class="active step0"></li>
-                        <li class="step0"></li>
-                    </ul>
+                    <div class="d-flex my-1">
+                        <h3>ORDER #: <span class="text-primary font-weight-bold">{{order.id}}</span></h3>
+                    </div>
+                    <div class="d-flex flex-column text-right">
+                        <h5 class="font-weight-bold">Order description:<h5>
+                        <p>{{order.Description}}</p>
                     </div>
                 </div>
-                -->
-
-                
-
-
-              </div>
-
+            </div>
+            
         <div class="container py-1" >
           <div class="main-timeline">
-            <div class="timeline left">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2017</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline right">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2016</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline left">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2015</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline right">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2012</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline left">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2011</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline right">
-              <div class="card">
-                <div class="card-body p-4">
-                  <h3>2007</h3>
-                  <p class="mb-0">Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto
-                    mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua
-                    dignissim per, habeo iusto primis ea eam.</p>
-                </div>
-              </div>
-            </div>
+
+            {% for step in client_steps %}
+            
+                {% if forloop.counter|divisibleby:2 %}
+                    <div class="timeline right">
+                {% else %}
+                    <div class="timeline left">
+                {% endif %}
+                        <div class="card">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-row justify-content-between">
+                                <h4>{{step.step_name}} </h4>
+                                {% if step.status == 'Pending' %}
+                                <img 
+                                src="{% static 'imagenes/work-in-progress.png' %}"
+                                style="height:60px;width:60px;"
+                                >
+                                {% endif %}
+                                {% if step.status == 'Complete' %}
+                                <img 
+                                src="{% static 'imagenes/checked.png' %}"
+                                style="height:60px;width:60px;"
+                                >
+                                {% endif %}
+                            </div>
+                            <h5>Status: {{step.status}}</h5>
+                            <p class="mb-0">Description: {{step.step_description}}</p>
+                            <p class="mb-0">Special notes: {{step.Notes}}</p>
+                        </div>
+                        </div>
+                    </div>
+            {% endfor %}
           </div>
         </div>
 
 
-        </div>
       </section>
 
     

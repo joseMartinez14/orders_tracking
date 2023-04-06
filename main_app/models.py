@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
+
 # Create your models here.
 
 class User(models.Model):
@@ -24,13 +29,13 @@ class Session(models.Model):
     expire_date = models.DateTimeField(auto_now=False, null=False)
 
 class Company(models.Model):
+    #ID implicito
     Name = models.CharField(max_length=45, null=False)
     Description = models.CharField(max_length=250, null=False)
     membership = models.BooleanField(default=False)
     #Logo = models.ImageField(null=True)  ????
     Creation_date = models.DateTimeField(auto_now=False, null=False)
     Last_membership_update = models.DateTimeField(auto_now=False, null=False)
-    #ID implicito
 
 class Mapping_Usuario_Empresa(models.Model):
     #ID implicito
@@ -62,7 +67,8 @@ class Company_Client(models.Model):
 class Company_Order(models.Model):
     #ID Implicito
     Company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    Client = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
+    Company_Process = models.ForeignKey(Company_Process, on_delete=models.CASCADE)
+    Client = models.ForeignKey(Company_Client, on_delete=models.CASCADE)
     Date_Received = models.DateTimeField(auto_now=False, null=False)
     Description = models.CharField(max_length=500, null=False)
     Status = models.CharField(max_length=10, null=False)

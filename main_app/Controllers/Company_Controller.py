@@ -1,10 +1,7 @@
 import json
 
 from rest_framework.views import APIView
-from django.http.response import JsonResponse
 from django.http import HttpResponse
-from django.db import connections
-from django.db import connection
 from django.template import loader
 from main_app.config import get_server_host
 from rest_framework import status
@@ -44,7 +41,7 @@ class Company_Controller(APIView):
 
         try:
             result = create_company(x, session)
-            if(result == 'UNABLE'):
+            if(result == 'UNAVAILABLE'):
                 return Response({}, status=status.HTTP_302_FOUND)
             return Response({}, status=status.HTTP_200_OK)
         except:
@@ -62,14 +59,14 @@ def create_company(json_data, session):
         return None
     
     if(get_company_by_session(session)):
-        return "UNABLE"
+        return "UNAVAILABLE"
     
     _user = get_user_by_session(session)
 
 
     company = Company(
         Name = json_data["company_name"],
-        Description = json_data["company_name"],
+        Description = json_data["company_description"],
         membership = True,
         Creation_date = datetime.now(),
         Last_membership_update = datetime.now()
