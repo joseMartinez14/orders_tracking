@@ -40,10 +40,7 @@ class Client_Order_Controller(APIView):
             print("Unable to find order number")
             return None
         
-        data = prepare_data(session, order_number)
-
-        if (data is None):
-             return redirect('main_app:Login')
+        data = prepare_data(order_number)
 
         return HttpResponse(template.render(data, request))
     
@@ -56,26 +53,25 @@ class Client_Order_Controller(APIView):
     def delete(self, request):
         pass
 
-def prepare_data(session, order_number):
-    if(session == "" or session is None):
-        #Return none. So controller can redirect
-        return None
+def prepare_data(order_number):
     
     company = None
     order = None
     client = None
     client_steps = []
-
-    try:
-        company = get_company_by_session(session)
-    except:
-        company = None
     #Necesito las procesos por compañia y los clientes por compañia
     try:
         order = Company_Order.objects.filter(id = order_number).values()[0]
     except:
         order = None
+    
     if order is not None:
+
+        try:
+            company = Company.objects.filter(id = order["Company_id"]).values()[0]
+        except:
+            company = None
+
         try:
             client = Company_Client.objects.filter(id = order["Client_id"]).values()[0]
         except:

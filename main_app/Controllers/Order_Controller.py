@@ -88,6 +88,11 @@ def create_new_order(session, data):
 
     order.save()
 
+    order_db = Company_Order.objects.get(id = order.id)
+    order_db.qr_url = f"{get_server_host()}/orders_manager/order_details/?order_number={order_db.id}"
+    order_db.save()
+    order_db.save()
+
     steps = Company_Process_step_template.objects.filter(Company_Process_id=data["process_id"]).values()
 
     print("all steps")

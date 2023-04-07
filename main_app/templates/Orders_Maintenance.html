@@ -73,7 +73,7 @@
                                         <td>{{order.Order_Status}}</td>
                                         <td onclick="openClientInfo('{{order.Client_name}}' , '{{order.Client_Address}}' , '{{order.Client_Phone}}' , '{{order.Client_Email}}')">{{order.Client_name}}</td>
                                         <td onclick="openStepInfo('{{order.Step_Info.Step_Name}}' , '{{order.Step_Info.Description}}' , '{{order.Step_Info.Status}}' , '{{order.Step_Info.Notes}}')">Step name: {{order.Step_Info.Step_Name}}</td>
-                                        <td><button type="button" class="btn btn-info">Order QR code</button></td>
+                                        <td><button  onclick="openQRInfo('{{order.Client_name}}' , '{{order.Description}}' , '{{order.id}}', '{{order.qr_code_img_url}}')" type="button" class="btn btn-info">Order QR code</button></td>
                                         <td><button type="button" class="btn btn-success">Complete Step</button></td>
                                         </tr>
                                         {% endfor %}
@@ -151,6 +151,40 @@
     <button type="button" id="step_info_modal_open" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#step_info_modal" hidden>
     </button>
 
+
+    <!-- Modal -->
+    
+    <div class="modal fade" id="order_qr_info_modal"  tabindex="-1" aria-labelledby="order_qr_info_modal" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal_title_id">Order step by step details:</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h3 id="order_qr_number"></h4>
+            <h4 id="order_qr_client"></h4>
+            <h4 id="order_qr_description"></h4>
+            <br>
+            <div class="d-flex justify-content-center">
+              <h4>Tracking:</h4>
+            </div>
+            <div class="d-flex justify-content-center">
+              <img id="qr_code_img" width="300">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <button type="button" id="order_qr_info_modal_open" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#order_qr_info_modal" hidden>
+    </button>
+
+
+
 <script>
 
 
@@ -180,6 +214,15 @@ $(document).ready(function(){
 
 
   main()
+
+  function openQRInfo(client_name, order_description, order_id, img_url){
+    $("#order_qr_number").text("Order #: " + order_id)
+    $("#order_qr_client").text("Client: " + client_name)
+    $("#order_qr_description").text("Description: " + order_description)
+    $("#qr_code_img").attr("src",img_url)
+
+    $("#order_qr_info_modal_open").click()
+  }
 
   function openStepInfo(name, description, status, notes){
 

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-lkw^(ubgw5ubt9c8^zdmc=)#@ssd*ju44x^o%h5zc5dm65k#ul
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "192.168.100.34"]
 
 
 # Application definition
@@ -133,7 +133,12 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIR = (os.path.join(BASE_DIR, 'orders_traking/static'),)
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

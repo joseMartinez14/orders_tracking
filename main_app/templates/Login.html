@@ -122,7 +122,7 @@
 
         try{
           $.ajax({
-              url: server+"/orders_manager/login/",
+              url: "/orders_manager/login/",
               headers: {'X-CSRFToken': csrftoken},
               type: "POST",
               data: JSON.stringify(dat) ,

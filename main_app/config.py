@@ -2,7 +2,8 @@
 from main_app.models import Session,User
 
 
-host = "http://localhost:8000"
+#host = "http://localhost:8000"
+host = "http://192.168.100.34:8000"
 
 
 def get_server_host():

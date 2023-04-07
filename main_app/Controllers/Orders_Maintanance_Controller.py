@@ -78,13 +78,14 @@ def prepare_data(session):
                 status_now = set_status_now(process, process_description_obj)
             elif status_now["Status"] == "Pending" and int(process_description_obj.Step_Order_Number) < int(status_now["Step_Order_Number"] ) and process["Status"] == "Complete":
                 status_now = set_status_now(process, process_description_obj)
-
+        order_db_obj = Company_Order.objects.get(id = order["id"])
         orders.append({
-            "id" : order["id"],
-            "Date_Received" : order["Date_Received"],
-            "Description" : order["Description"],
-            "Order_Status" : order["Status"],
+            "id" : order_db_obj.id,
+            "Date_Received" : order_db_obj.Date_Received,
+            "Description" : order_db_obj.Description,
+            "Order_Status" : order_db_obj.Status,
             "Client_name" : client_obj.Name,
+            "qr_code_img_url": order_db_obj.qr_code_img.url,
             "Client_Address" : client_obj.Address,
             "Client_Phone" : client_obj.Cellphone,
             "Client_Email" : client_obj.Email,
