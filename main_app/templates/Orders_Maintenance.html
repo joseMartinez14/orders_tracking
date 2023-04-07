@@ -72,9 +72,9 @@
                                         <td>{{order.Description}}</td>
                                         <td>{{order.Order_Status}}</td>
                                         <td onclick="openClientInfo('{{order.Client_name}}' , '{{order.Client_Address}}' , '{{order.Client_Phone}}' , '{{order.Client_Email}}')">{{order.Client_name}}</td>
-                                        <td onclick="openStepInfo('{{order.Step_Info.Step_Name}}' , '{{order.Step_Info.Description}}' , '{{order.Step_Info.Status}}' , '{{order.Step_Info.Notes}}')">Step name: {{order.Step_Info.Step_Name}}</td>
+                                        <td onclick="openStepInfo('{{order.id}}', '{{order.Step_Info.id}}','{{order.Step_Info.Step_Name}}' , '{{order.Step_Info.Description}}' , '{{order.Step_Info.Status}}' , '{{order.Step_Info.Notes}}')">Step name: {{order.Step_Info.Step_Name}}</td>
                                         <td><button  onclick="openQRInfo('{{order.Client_name}}' , '{{order.Description}}' , '{{order.id}}', '{{order.qr_code_img_url}}')" type="button" class="btn btn-info">Order QR code</button></td>
-                                        <td><button type="button" class="btn btn-success">Complete Step</button></td>
+                                        <td><button type="button" onclick="complete_step('{{order.id}}')" id="complete_step_button" class="btn btn-success">Complete Step</button></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -140,9 +140,9 @@
                 placeholder="Optional (Client can see this notes)"></textarea>
           </div>
           <div class="modal-footer">
-            <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="update_client_button" class="btn btn-info">Update notes</button>
-            <button type="button" id="save_client_button" class="btn btn-primary">Complete Step</button>
+            <button type="button" id="close_step_note_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="update_step_note_button" class="btn btn-info">Update notes</button>
+            <button type="button" id="complete_step_modal_button" class="btn btn-primary">Complete Step</button>
           </div>
       </div>
     </div>
@@ -204,16 +204,120 @@ $(document).ready(function(){
   client_address_modal_field = $("#client_address_modal_field")
 
   selected_client_id = null
+  selected_client_process_id = null
+  selected_order_id = null
   
   function main(){
       $("#client_name_field").val("")
       $("#save_client_button").on("click", function(){save_new_client()});
-      $("#update_client_button").on("click", function(){update_client()});
+      $("#update_step_note_button").on("click", function(){update_step_note()});
+      $("#complete_step_modal_button").on("click", function(){complete_step(selected_order_id)});
 
   }
 
 
   main()
+
+  function complete_step(step_id){
+
+
+    const csrftoken = getCookie('csrftoken') 
+
+    var dat = {
+      'order_id' : step_id,
+    }
+
+    try{
+      $.ajax({
+          url: "/orders_manager/orders_maintenance/",
+          headers: {'X-CSRFToken': csrftoken},
+          type: "POST",
+          dataType: 'json',
+          data: JSON.stringify(dat) ,
+          success: function (result) {
+            Swal.fire(
+                'Ready!',
+                'Step Complete',
+                'success'
+            ).then((result) => {
+              location.reload();
+            })
+            $("#close_step_note_modal_button").click()
+          },
+          error: function(status, error){
+            if(status.status == 307){
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Final step complete already'
+              })
+            } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Not able to complete step'
+                })
+            }
+          }
+      });
+    }catch(err){
+      console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Connection with server failed'
+      })
+    }
+
+
+  }
+
+  function update_step_note(){
+    const csrftoken = getCookie('csrftoken') 
+
+    var notes_val = $("#step_special_notes").val()
+
+    var dat = {
+      'client_process_id' : selected_client_process_id,
+      'notes' : notes_val
+    }
+
+    try{
+      $.ajax({
+          url: "/orders_manager/orders_maintenance/",
+          headers: {'X-CSRFToken': csrftoken},
+          type: "PUT",
+          dataType: 'json',
+          data: JSON.stringify(dat) ,
+          success: function (result) {
+            Swal.fire(
+                'Ready!',
+                'Step Updated',
+                'success'
+            ).then((result) => {
+              location.reload();
+            })
+            $("#close_step_note_modal_button").click()
+          },
+          error: function(status, error){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Not able to update step'
+            })
+          }
+      });
+    }catch(err){
+      console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Connection with server failed'
+      })
+    }
+
+
+  }
 
   function openQRInfo(client_name, order_description, order_id, img_url){
     $("#order_qr_number").text("Order #: " + order_id)
@@ -224,12 +328,14 @@ $(document).ready(function(){
     $("#order_qr_info_modal_open").click()
   }
 
-  function openStepInfo(name, description, status, notes){
+  function openStepInfo(order_id, id, name, description, status, notes){
 
     $("#step_info_name").text("Name: " + name)
     $("#step_info_description").text("Decription: " + description)
     $("#step_info_status").text("Status: " + status)
     $("#step_special_notes").text(notes)
+    selected_client_process_id = id
+    selected_order_id = order_id
 
     $("#step_info_modal_open").click()
     

@@ -39,14 +39,39 @@ class Orders_Maintanance_Controller(APIView):
         return HttpResponse(template.render(data, request))
     
     def post(self, request):
-        pass
+        x = json.loads(list(request.data.dict().keys())[0])
+        result = change_order_new_step(x)
+        try:
+            
+            if (result is None):
+                return Response({}, status=status.HTTP_307_TEMPORARY_REDIRECT)
+            return Response({}, status=status.HTTP_200_OK)
+        except:
+            print("An exception occurred") 
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        pass
+        print("Got to post on Orders_Maintanance_Controller put")
+        x = json.loads(request.body)
+        try:
+            update_client_process(x)
+            return Response({}, status=status.HTTP_200_OK)
+        except:
+            print("An exception occurred") 
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
     def delete(self, request):
         pass
+
+
+def update_client_process(json_data):
+    process = Process_Step_Client.objects.get(id = json_data["client_process_id"])
+
+    process.Notes = json_data["notes"]
+
+    process.save()
+
 
 def sort_function(e):
     return e["Date_Received"]

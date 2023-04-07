@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 from .Controllers.Login_Controller import Login_Controller
 from .Controllers.Register_Controller import Register_Controller
 from .Controllers.Company_Process_Controller import Company_Process_Controller
@@ -15,6 +16,7 @@ from .Controllers.Orders_Maintanance_Controller import Orders_Maintanance_Contro
 app_name = "main_app"
 
 urlpatterns = [
+    path('password/', auth_views.PasswordChangeView.as_view(), name = 'password_change'),
     path('order_tracking/', views.members, name='members'),
     path('registration_test/', views.registration_example, name='registration_example'),
     path('login_test/', views.login_example, name='login_example'),
