@@ -29,12 +29,13 @@ class Orders_Maintanance_Controller(APIView):
         session = request.COOKIES.get("sessionid","")
         try:
             data = prepare_data(session)
+        except KeyError:
+            return redirect('main_app:Login')
+        except ValueError:
+            return redirect('main_app:create_company')
         except:
             print("Unable to get data on Orders_Maintanance_Controller")
             data = {}
-
-        if (data is None):
-             return redirect('main_app:Login')
 
         return HttpResponse(template.render(data, request))
     
@@ -79,9 +80,12 @@ def sort_function(e):
 def prepare_data(session):
     if(session == "" or session is None):
         #Return none. So controller can redirect
-        return None
+        raise KeyError("need to login")
     
     company = get_company_by_session(session)
+
+    if company is None:
+        raise ValueError("need to create a company")
 
     company_orders = list(Company_Order.objects.filter(Company_id = company["id"]).values())
 

@@ -93,7 +93,7 @@
 
       try{
           $.ajax({
-              url: server+"/orders_manager/create_company/",
+              url: "/orders_manager/create_company/",
               headers: {'X-CSRFToken': csrftoken},
               type: "PUT",
               dataType: 'json',

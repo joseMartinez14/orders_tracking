@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-lkw^(ubgw5ubt9c8^zdmc=)#@ssd*ju44x^o%h5zc5dm65k#ul
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "192.168.100.34"]
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -87,7 +86,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'orders_tracking',
         'USER': 'root',
-        'PASSWORD': 'root',
+        #'PASSWORD': 'root',
+        'PASSWORD': 'joseandres',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -135,6 +135,8 @@ STATICFILES_DIR = (os.path.join(BASE_DIR, 'orders_traking/static'),)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+
+LOGIN_URL = ''
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -71,7 +71,9 @@
                                   {% endfor %}
                                 </select>
                                 <div class="d-flex flex-row-reverse">
-                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
+                                  <form action="/orders_manager/processes_maintenance/">
+                                    <button type="submit" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
+                                  </form>
                                 </div>
                                 <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
                                 <textarea  class="form-control form-control-lg" id="order_description_field"

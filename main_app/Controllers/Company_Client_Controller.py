@@ -23,7 +23,9 @@ class Company_Client_Controller(APIView):
         data = prepare_data(session)
 
         if (data is None):
-             return redirect('main_app:Login')
+            return redirect('main_app:Login')
+        elif (data == "CREATE_COMPANY"):
+            return redirect('main_app:create_company')
 
         return HttpResponse(template.render(data, request))
     
@@ -129,6 +131,9 @@ def prepare_data(session):
     company_clients = []
 
     company = get_company_by_session(session)
+
+    if company is None:
+        return "CREATE_COMPANY"
 
     try:
         company_clients = list(Company_Client.objects.filter(Company_id = company["id"]).values())

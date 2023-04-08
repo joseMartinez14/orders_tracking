@@ -49,7 +49,7 @@
                             <input class="form-control" id="search_client_input" type="text" placeholder="Search..">
                             <br>
                             <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                <table id="client_list" class="table table-bordered table-striped" style="width:100%; height: 150%;">
+                                <table id="client_list" class="table table-bordered table-striped" style="width:100%;">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -199,7 +199,7 @@
 
     try{
       $.ajax({
-          url: "/orders_manager/clients/",
+          url: "/orders_manager/clients_maintenance/",
           headers: {'X-CSRFToken': csrftoken},
           type: "PUT",
           dataType: 'json',
@@ -267,7 +267,7 @@
 
     try{
       $.ajax({
-          url: "/orders_manager/clients/",
+          url: "/orders_manager/clients_maintenance/",
           headers: {'X-CSRFToken': csrftoken},
           type: "DELETE",
           dataType: 'json',
@@ -316,7 +316,7 @@
 
     try{
       $.ajax({
-          url: "/orders_manager/clients/",
+          url: "/orders_manager/clients_maintenance/",
           headers: {'X-CSRFToken': csrftoken},
           type: "POST",
           dataType: 'json',

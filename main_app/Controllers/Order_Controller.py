@@ -33,11 +33,12 @@ class Order_Controller(APIView):
         #I guess I need to check cache and to see if is logged in or session?
         template = loader.get_template('New_Order.html')
         session = request.COOKIES.get("sessionid","")
-        data = prepare_data(session)
+        try:
+            data = prepare_data(session)
+        except ValueError:
+            return redirect('main_app:create_company')
         if (data is None):
              return redirect('main_app:Login')
-        if (data == "COMPANY_UNABLE"):
-            return redirect('main_app:create_company')
 
         return HttpResponse(template.render(data, request))
     
@@ -50,9 +51,8 @@ class Order_Controller(APIView):
         x = json.loads(request.body)
         print("This is the body")
         print(x)
-        result = create_new_order(session, x)
         try:
-            
+            result = create_new_order(session, x)
             if (result is None):
                 return Response({}, status=status.HTTP_307_TEMPORARY_REDIRECT)
             if (result == "COMPANY_UNAVAILABLE"):
@@ -122,10 +122,9 @@ def prepare_data(session):
     company_process = None
     company_clients = None
 
-    try:
-        company = get_company_by_session(session)
-    except:
-        return "COMPANY_UNABLE" 
+    company = get_company_by_session(session)
+    if company is None:
+        raise ValueError("need to create a company")
     #Necesito las procesos por compañia y los clientes por compañia
     try:
         company_process = Company_Process.objects.filter(Company_id = company["id"]).values()
@@ -156,9 +155,13 @@ def get_company_by_session(session):
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     _user_id = user_logged_in["_auth_user_id"]
-    mapping = Mapping_Usuario_Empresa.objects.filter(User_id = _user_id ).values()
-    company_id = mapping[0]["Company_id"]
-    company = Company.objects.filter(id = company_id).values()[0]
-    return company
+
+    try:
+        mapping = Mapping_Usuario_Empresa.objects.filter(User_id = _user_id ).values()
+        company_id = mapping[0]["Company_id"]
+        company = Company.objects.filter(id = company_id).values()[0]
+        return company
+    except:
+        return None
 
 

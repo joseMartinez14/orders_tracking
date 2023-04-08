@@ -23,9 +23,12 @@ class Company_Process_Controller(APIView):
         #I guess I need to check cache and to see if is logged in or session?
         template = loader.get_template('Company_Process_CRUD.html')
         session = request.COOKIES.get("sessionid","")
-        data = prepare_data(session)
-        if (data is None):
-             return redirect('main_app:Login')
+        try:
+            data = prepare_data(session)
+        except KeyError:
+            return redirect('main_app:Login')
+        except ValueError:
+            return redirect('main_app:create_company')
         return HttpResponse(template.render(data, request))
     
     def post(self, request):
@@ -172,12 +175,15 @@ def insert_process(json_data, session):
 def prepare_data(session):
     if(session == "" or session is None):
         #Return none. So controller can redirect
-        return None
+        raise KeyError("need to login")
     
     company_process = []
     company_process_steps = []
 
     company = get_company_by_session(session)
+
+    if company is None:
+        raise ValueError("need to create a company")
     
     try:
         company_process = list(Company_Process.objects.filter(Company_id = company["id"]).values() )

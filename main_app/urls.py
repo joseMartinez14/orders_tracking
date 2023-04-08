@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views
 from django.contrib.auth import views as auth_views
 from .Controllers.Login_Controller import Login_Controller
@@ -16,16 +16,15 @@ from .Controllers.Orders_Maintanance_Controller import Orders_Maintanance_Contro
 app_name = "main_app"
 
 urlpatterns = [
-    path('password/', auth_views.PasswordChangeView.as_view(), name = 'password_change'),
     path('order_tracking/', views.members, name='members'),
     path('registration_test/', views.registration_example, name='registration_example'),
     path('login_test/', views.login_example, name='login_example'),
     path('login/', Login_Controller.as_view(), name = 'Login'),
     path('register/', Register_Controller.as_view(), name = 'Register'),
-    path('create_process/', Company_Process_Controller.as_view(), name = 'create_process'),
+    path('processes_maintenance/', Company_Process_Controller.as_view(), name = 'create_process'),
     path('create_company/', Company_Controller.as_view(), name = 'create_company'),
     path('create_order/', Order_Controller.as_view(), name = 'order_controller'),
-    path('clients/', Company_Client_Controller.as_view(), name = 'client_controller'),
+    path('clients_maintenance/', Company_Client_Controller.as_view(), name = 'client_controller'),
     path('order_details/', Client_Order_Controller.as_view(), name = 'Client_Order_Controller'),
     path('steps_template/', Steps_Template_Controller.as_view(), name = 'Steps_Template_Controller'),
     path('orders_maintenance/', Orders_Maintanance_Controller.as_view(), name = 'Orders_Maintanance_controller'),
