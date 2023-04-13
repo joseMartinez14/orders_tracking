@@ -15,3 +15,7 @@ def registration_example(request):
 def login_example(request):
     template = loader.get_template('Login_Example.html')
     return HttpResponse(template.render())
+
+def main_page(request):
+    template = loader.get_template('Main_Page.html')
+    return HttpResponse(template.render())

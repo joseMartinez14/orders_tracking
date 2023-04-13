@@ -73,7 +73,7 @@
                                         <td>{{order.Order_Status}}</td>
                                         <td onclick="openClientInfo('{{order.Client_name}}' , '{{order.Client_Address}}' , '{{order.Client_Phone}}' , '{{order.Client_Email}}')">{{order.Client_name}}</td>
                                         <td onclick="openStepInfo('{{order.id}}', '{{order.Step_Info.id}}','{{order.Step_Info.Step_Name}}' , '{{order.Step_Info.Description}}' , '{{order.Step_Info.Status}}' , '{{order.Step_Info.Notes}}')">Step name: {{order.Step_Info.Step_Name}}</td>
-                                        <td><button  onclick="openQRInfo('{{order.Client_name}}' , '{{order.Description}}' , '{{order.id}}', '{{order.qr_code_img_url}}')" type="button" class="btn btn-info">Order QR code</button></td>
+                                        <td><button  onclick="openQRInfo('{{order.direct_link}}','{{order.Client_name}}' , '{{order.Description}}' , '{{order.id}}', '{{order.qr_code_img_url}}')" type="button" class="btn btn-info">Order QR code</button></td>
                                         <td><button type="button" onclick="complete_step('{{order.id}}')" id="complete_step_button" class="btn btn-success">Complete Step</button></td>
                                         </tr>
                                         {% endfor %}
@@ -172,6 +172,9 @@
             <div class="d-flex justify-content-center">
               <img id="qr_code_img" width="300">
             </div>
+            <div class="d-flex justify-content-center">
+              <h5 id="order_direct_link"></h5>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -180,6 +183,7 @@
       </div>
     </div>
   
+    
     <button type="button" id="order_qr_info_modal_open" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#order_qr_info_modal" hidden>
     </button>
 
@@ -319,11 +323,12 @@ $(document).ready(function(){
 
   }
 
-  function openQRInfo(client_name, order_description, order_id, img_url){
+  function openQRInfo(direct_link, client_name, order_description, order_id, img_url){
     $("#order_qr_number").text("Order #: " + order_id)
     $("#order_qr_client").text("Client: " + client_name)
     $("#order_qr_description").text("Description: " + order_description)
     $("#qr_code_img").attr("src",img_url)
+    $("#order_direct_link").text("Direct link: " + direct_link)
 
     $("#order_qr_info_modal_open").click()
   }
@@ -417,14 +422,7 @@ $(document).ready(function(){
   }
 
   function clean_selection(){
-    $("#update_client_button").hide()
-    $("#save_client_button").show()
-    $("#modal_title_id").text("Add new client")
-    selected_client_id = null
-    client_name_modal_field.val("")
-    client_cellphone_modal_field.val("")
-    client_email_modal_field.val("")
-    client_address_modal_field.val("")
+    window.location.replace("/orders_manager/create_order");
   }
 
   function delete_client_confirmation(client_id, client_name){

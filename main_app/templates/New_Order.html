@@ -310,7 +310,7 @@
 
     try{
       $.ajax({
-          url: "/orders_manager/clients/",
+          url: "/orders_manager/clients_maintenance/",
           headers: {'X-CSRFToken': csrftoken},
           type: "POST",
           dataType: 'json',
@@ -321,8 +321,6 @@
                 'Client added',
                 'success'
             )
-            console.log("Deberia dar el nuevo usuario id")
-            console.log(result.client_id)
             selected_client_id = result.client_id
             $("#close_client_modal_button").click()
             $("#client_name_field").val(result.client_name)

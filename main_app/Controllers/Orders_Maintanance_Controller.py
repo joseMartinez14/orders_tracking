@@ -115,6 +115,7 @@ def prepare_data(session):
             "Order_Status" : order_db_obj.Status,
             "Client_name" : client_obj.Name,
             "qr_code_img_url": order_db_obj.qr_code_img.url,
+            "direct_link": order_db_obj.qr_url,
             "Client_Address" : client_obj.Address,
             "Client_Phone" : client_obj.Cellphone,
             "Client_Email" : client_obj.Email,
