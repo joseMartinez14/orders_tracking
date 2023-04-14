@@ -1,414 +1,531 @@
-{% load static %}
-{% load cache_bust %}
+{% load static %} {% load cache_bust %}
 <!DOCTYPE html>
 <html lang="es">
-
-    <Head>
-        <meta charset="utf-8" />
+  <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-     <!--Import jQuery before export.js-->
-     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
- 
+    <!--Import jQuery before export.js-->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-2.1.1.min.js"
+    ></script>
 
-    <link rel="stylesheet" href="{% static 'css/Example.css' %} ?{% cache_bust %}">
-    </Head>
+    <link
+      rel="stylesheet"
+      href="{% static 'css/Example.css' %} ?{% cache_bust %}"
+    />
+  </head>
 
+  <!--For some reason css static file is not working on docker
+  
+    FUTURE: Fix css to use static
+  -->
+  <style>
+    .my-custom-scrollbar {
+      position: relative;
+      height: 600px;
+      overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+      display: block;
+    }
+    body {
+      color: #000;
+      overflow-x: hidden;
+      height: 100%;
+      background-image: linear-gradient(135deg, white, #92a8d1, #34568b);
+      background-repeat: no-repeat;
+    }
 
-    <style>
-      .my-custom-scrollbar {
-        position: relative;
-        height: 600px;
-        overflow: auto;
-      }
-      .table-wrapper-scroll-y {
-        display: block;
-      }
-    </style>
+    .card {
+      z-index: 0;
+      background-color: #eceff1;
+      padding-bottom: 20px;
+      margin-top: 5px;
+      margin-bottom: 50px;
+      border-radius: 10px;
+    }
 
+    .top {
+      padding-top: 40px;
+      padding-left: 15% !important;
+      padding-right: 13% !important;
+    }
+  </style>
 
-<body>
-
-  <header>
-    {% include 'header_bar.html' with server=server %}
-  </header>
+  <body>
+    <header>{% include 'header_bar.html' with server=server %}</header>
 
     <section>
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col">
-              <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
-                <div class="card-body py-4 px-4 px-md-5">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col">
+            <div
+              class="card"
+              id="list1"
+              style="border-radius: 0.75rem; background-color: #eff1f2"
+            >
+              <div class="card-body py-4 px-4 px-md-5">
+                <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
+                  <i class="fas fa-check-square me-1"></i>
+                  <u>Add order </u>
+                </p>
+                <div class="pb-2">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column">
+                        <label
+                          for="client_name_field"
+                          class="form-label form-control-lg"
+                          >Client:</label
+                        >
+                        <fieldset disabled>
+                          <input
+                            type="text"
+                            class="form-control form-control-lg"
+                            id="client_name_field"
+                            placeholder="Select client to display name"
+                          />
+                        </fieldset>
 
-                    <p class="h2 text-center mt-3 mb-4 pb-3 text-primary">
-                        <i class="fas fa-check-square me-1"></i>
-                        <u>Add order </u>
-                      </p>
-                    <div class="pb-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column">
-                                <label for="client_name_field" class="form-label form-control-lg">Client:</label>
-                                <fieldset disabled>
-                                <input type="text" class="form-control form-control-lg" id="client_name_field"  placeholder="Select client to display name">
-                                </fieldset>
-
-                                <div class="d-flex flex-row-reverse">
-                                  <button type="button" class="btn ms-3 mt-3 btn-info" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#add_client_modal" >Add new client</button>
-                                  <button type="button" class="btn mt-3 ms-3 btn-primary" id="submit_buttom" data-bs-toggle="modal" data-bs-target="#client_list_modal_id">Open client list</button>
-                                </div>
-
-                                <label for="order_name_field" class="form-label form-control-lg mt-3">Select process:</label>
-                                <select id="process_selector" class="form-select" aria-label="Default select example">
-                                  {% for process in company_process %}
-                                    <option value="{{process.id}}">{{process.Process_Name}}</option>
-                                  {% endfor %}
-                                </select>
-                                <div class="d-flex flex-row-reverse">
-                                  <form action="/orders_manager/processes_maintenance/">
-                                    <button type="submit" class="btn ms-3 mt-3 btn-info" id="submit_buttom">Add new process</button>
-                                  </form>
-                                </div>
-                                <label for="order_description_field" class="form-label form-control-lg">Order description:</label>
-                                <textarea  class="form-control form-control-lg" id="order_description_field"
-                                placeholder="Optional"></textarea>
-                            </div>
+                        <div class="d-flex flex-row-reverse">
+                          <button
+                            type="button"
+                            class="btn ms-3 mt-3 btn-info"
+                            id="submit_buttom"
+                            data-bs-toggle="modal"
+                            data-bs-target="#add_client_modal"
+                          >
+                            Add new client
+                          </button>
+                          <button
+                            type="button"
+                            class="btn mt-3 ms-3 btn-primary"
+                            id="submit_buttom"
+                            data-bs-toggle="modal"
+                            data-bs-target="#client_list_modal_id"
+                          >
+                            Open client list
+                          </button>
                         </div>
-                    </div>
-                    </div>
 
-                    <div class=" d-flex justify-content-center">
-                      <button type="button" class="btn mt-3 btn-success" id="submit_order_buttom">Submit new order</button>
+                        <label
+                          for="order_name_field"
+                          class="form-label form-control-lg mt-3"
+                          >Select process:</label
+                        >
+                        <select
+                          id="process_selector"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          {% for process in company_process %}
+                          <option value="{{process.id}}">
+                            {{process.Process_Name}}
+                          </option>
+                          {% endfor %}
+                        </select>
+                        <div class="d-flex flex-row-reverse">
+                          <form action="/orders_manager/processes_maintenance/">
+                            <button
+                              type="submit"
+                              class="btn ms-3 mt-3 btn-info"
+                              id="submit_buttom"
+                            >
+                              Add new process
+                            </button>
+                          </form>
+                        </div>
+                        <label
+                          for="order_description_field"
+                          class="form-label form-control-lg"
+                          >Order description:</label
+                        >
+                        <textarea
+                          class="form-control form-control-lg"
+                          id="order_description_field"
+                          placeholder="Optional"
+                        ></textarea>
+                      </div>
                     </div>
+                  </div>
+                </div>
 
+                <div class="d-flex justify-content-center">
+                  <button
+                    type="button"
+                    class="btn mt-3 btn-success"
+                    id="submit_order_buttom"
+                  >
+                    Submit new order
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-</body>
+      </div>
+    </section>
+  </body>
 
-
-
-
-
-  
   <!-- Modal -->
-  <div class="modal fade" id="client_list_modal_id" tabindex="-1" aria-labelledby="client_list_modal_id" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="client_list_modal_id"
+    tabindex="-1"
+    aria-labelledby="client_list_modal_id"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">List of clients</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
-          
-            <input class="form-control" id="search_client_input" type="text" placeholder="Search..">
-            <br>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table id="client_list" class="table table-bordered table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Cellphone</th>
-                        <th>Email</th>
-                        <th>Select</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  {% for client in company_clients %}
-                  <tr>
-                    <td>{{client.Name}}</td>
-                    <td>{{client.Cellphone}}</td>
-                    <td>{{client.Email}}</td>
-                    <td>
-                      <input type="image"
+          <input
+            class="form-control"
+            id="search_client_input"
+            type="text"
+            placeholder="Search.."
+          />
+          <br />
+          <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table
+              id="client_list"
+              class="table table-bordered table-striped"
+              style="width: 100%"
+            >
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Cellphone</th>
+                  <th>Email</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for client in company_clients %}
+                <tr>
+                  <td>{{client.Name}}</td>
+                  <td>{{client.Cellphone}}</td>
+                  <td>{{client.Email}}</td>
+                  <td>
+                    <input
+                      type="image"
                       id="myimage"
-                      style="height:50px;width:50px;"
+                      style="height: 50px; width: 50px"
                       src="{% static 'imagenes/touchscreen.png' %}"
                       onclick="select_client_from_list('{{client.id}}', '{{client.Name}}' )"
-                      />
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
+                    />
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="close_client_list_modal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button
+            type="button"
+            id="close_client_list_modal"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
   </div>
-  
-
-
-    <!-- Modal -->
-    
-    <div class="modal fade" id="add_client_modal"  tabindex="-1" aria-labelledby="add_client_modal" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" >Add new client</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            {% include 'add_client_modal.html'%}
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="close_client_modal_button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="save_client_button" class="btn btn-primary">Save client</button>
-          </div>
-      </div>
-    </div>
-    
-
-<script>
-
-    var user = "{{current_user}}"
-    console.log("user")
-    console.log(user)
-    var process = "{{company_process}}"
-    console.log("process")
-    console.log(process)
-
-    $(document).ready(function(){
-      $("#search_client_input").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#client_list tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
-  });
-
-  main()
-
-  client_name_modal_field = $("#client_name_modal_field")
-  client_cellphone_modal_field = $("#client_cellphone_modal_field")
-  client_email_modal_field = $("#client_email_modal_field")
-  client_address_modal_field = $("#client_address_modal_field")
-
-  selected_client_id = null
-  
-  function main(){
-      $("#client_name_field").val("")
-      $("#save_client_button").on("click", function(){save_new_client()});
-      $("#submit_order_buttom").on("click", function(){submit_new_order()});
-
-  }
-
-  function submit_new_order(){
-
-    if(!validate_order_entries()){
-      return
-    }
-    option_selected = $("#process_selector").val()
-    order_description = $("#order_description_field").val()
-
-    const csrftoken = getCookie('csrftoken') 
-
-    var dat = {
-      'process_id' : option_selected,
-      'client_id' : selected_client_id,
-      'order_description' : order_description
-    }
-
-    try{
-      $.ajax({
-          url: "/orders_manager/create_order/",
-          headers: {'X-CSRFToken': csrftoken},
-          type: "PUT",
-          dataType: 'json',
-          data: JSON.stringify(dat) ,
-          success: function (result) {
-            Swal.fire(
-                'Ready!',
-                `Order added. Order number: ${result.order_id}`,
-                'success'
-            )
-          },
-          error: function(status, error){
-            console.log(error)
-            console.log(status)
-            if(status.status == 302){
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please create a company before'
-              })
-            } else if (status.status == 307){
-                Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Browser error please refresh and try again'
-              })
-            } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'Not able to create the order'
-                })
-            }
-          }
-      });
-    }catch(err){
-      console.log(err)
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Connection with server failed'
-      })
-    }
-
-  }
-
-  function validate_order_entries(){
-    option_selected = $("#process_selector").val()
-
-    if (option_selected == null){
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select or add a step by step process for this order'
-      })
-      return false
-    }
-    else if (selected_client_id == null){
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select or add a client for this order'
-      })
-      return false
-    }
-    return true
-  }
-
-
-  function save_new_client(){
-
-    if (validate_client_input() == false){
-        return
-      }
-
-    const csrftoken = getCookie('csrftoken') 
-
-    var dat = {
-      'client_name':client_name_modal_field.val() ,
-      'client_cellphone':client_cellphone_modal_field.val(),
-      'client_email':client_email_modal_field.val(),
-      'client_address':client_address_modal_field.val()
-    }
-
-    try{
-      $.ajax({
-          url: "/orders_manager/clients_maintenance/",
-          headers: {'X-CSRFToken': csrftoken},
-          type: "POST",
-          dataType: 'json',
-          data: JSON.stringify(dat) ,
-          success: function (result) {
-            Swal.fire(
-                'Ready!',
-                'Client added',
-                'success'
-            )
-            selected_client_id = result.client_id
-            $("#close_client_modal_button").click()
-            $("#client_name_field").val(result.client_name)
-          },
-          error: function(status, error){
-            console.log(error)
-            console.log(status)
-            if(status.status == 302){
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Client already exists on your company'
-              })
-            } else if (status.status == 307){
-                Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Browser error please refresh and try again'
-              })
-            } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'Not able to insert client'
-                })
-            }
-          }
-      });
-    }catch(err){
-      console.log(err)
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Connection with server failed'
-      })
-    }
-  }
-
-  function select_client_from_list(client_id, client_name){
-    console.log("select_client_from_list")
-    console.log("***")
-    console.log(client_id)
-    selected_client_id = client_id
-    $("#client_name_field").val(client_name)
-    $("#close_client_list_modal").click()
-  }
-
-  function validate_client_input(){
-    client_name_modal_field = $("#client_name_modal_field")
-    client_cellphone_modal_field = $("#client_cellphone_modal_field")
-    client_email_modal_field = $("#client_email_modal_field")
-    client_address_modal_field = $("#client_address_modal_field")
-    if (
-      client_name_modal_field.val() == "" ||
-      client_cellphone_modal_field.val() == "" ||
-      client_email_modal_field.val() == ""
-      ){
-        Swal.fire('Fill client name, cellphone and email please')
-        return false
-      }
-      return true
-  }
-
-  function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue; 
-    }
-
-</script>
-
-
-
 </html>
 
+<!-- Modal -->
 
+<div
+  class="modal fade"
+  id="add_client_modal"
+  tabindex="-1"
+  aria-labelledby="add_client_modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add new client</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">{% include 'add_client_modal.html'%}</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="close_client_modal_button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" id="save_client_button" class="btn btn-primary">
+          Save client
+        </button>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    var user = "{{current_user}}";
+    console.log("user");
+    console.log(user);
+    var process = "{{company_process}}";
+    console.log("process");
+    console.log(process);
 
+    $(document).ready(function () {
+      $("#search_client_input").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#client_list tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+      });
+    });
 
+    main();
 
+    client_name_modal_field = $("#client_name_modal_field");
+    client_cellphone_modal_field = $("#client_cellphone_modal_field");
+    client_email_modal_field = $("#client_email_modal_field");
+    client_address_modal_field = $("#client_address_modal_field");
 
+    selected_client_id = null;
+
+    function main() {
+      $("#client_name_field").val("");
+      $("#save_client_button").on("click", function () {
+        save_new_client();
+      });
+      $("#submit_order_buttom").on("click", function () {
+        submit_new_order();
+      });
+    }
+
+    function submit_new_order() {
+      if (!validate_order_entries()) {
+        return;
+      }
+      option_selected = $("#process_selector").val();
+      order_description = $("#order_description_field").val();
+
+      const csrftoken = getCookie("csrftoken");
+
+      var dat = {
+        process_id: option_selected,
+        client_id: selected_client_id,
+        order_description: order_description,
+      };
+
+      try {
+        $.ajax({
+          url: "/orders_manager/create_order/",
+          headers: { "X-CSRFToken": csrftoken },
+          type: "PUT",
+          dataType: "json",
+          data: JSON.stringify(dat),
+          success: function (result) {
+            Swal.fire(
+              "Ready!",
+              `Order added. Order number: ${result.order_id}`,
+              "success"
+            );
+          },
+          error: function (status, error) {
+            console.log(error);
+            console.log(status);
+            if (status.status == 302) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please create a company before",
+              });
+            } else if (status.status == 307) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Browser error please refresh and try again",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Not able to create the order",
+              });
+            }
+          },
+        });
+      } catch (err) {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Connection with server failed",
+        });
+      }
+    }
+
+    function validate_order_entries() {
+      option_selected = $("#process_selector").val();
+
+      if (option_selected == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select or add a step by step process for this order",
+        });
+        return false;
+      } else if (selected_client_id == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select or add a client for this order",
+        });
+        return false;
+      }
+      return true;
+    }
+
+    function save_new_client() {
+      if (validate_client_input() == false) {
+        return;
+      }
+
+      const csrftoken = getCookie("csrftoken");
+
+      var dat = {
+        client_name: client_name_modal_field.val(),
+        client_cellphone: client_cellphone_modal_field.val(),
+        client_email: client_email_modal_field.val(),
+        client_address: client_address_modal_field.val(),
+      };
+
+      try {
+        $.ajax({
+          url: "/orders_manager/clients_maintenance/",
+          headers: { "X-CSRFToken": csrftoken },
+          type: "POST",
+          dataType: "json",
+          data: JSON.stringify(dat),
+          success: function (result) {
+            Swal.fire("Ready!", "Client added", "success");
+            selected_client_id = result.client_id;
+            $("#close_client_modal_button").click();
+            $("#client_name_field").val(result.client_name);
+          },
+          error: function (status, error) {
+            console.log(error);
+            console.log(status);
+            if (status.status == 302) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Client already exists on your company",
+              });
+            } else if (status.status == 307) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Browser error please refresh and try again",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Not able to insert client",
+              });
+            }
+          },
+        });
+      } catch (err) {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Connection with server failed",
+        });
+      }
+    }
+
+    function select_client_from_list(client_id, client_name) {
+      console.log("select_client_from_list");
+      console.log("***");
+      console.log(client_id);
+      selected_client_id = client_id;
+      $("#client_name_field").val(client_name);
+      $("#close_client_list_modal").click();
+    }
+
+    function validate_client_input() {
+      client_name_modal_field = $("#client_name_modal_field");
+      client_cellphone_modal_field = $("#client_cellphone_modal_field");
+      client_email_modal_field = $("#client_email_modal_field");
+      client_address_modal_field = $("#client_address_modal_field");
+      if (
+        client_name_modal_field.val() == "" ||
+        client_cellphone_modal_field.val() == "" ||
+        client_email_modal_field.val() == ""
+      ) {
+        Swal.fire("Fill client name, cellphone and email please");
+        return false;
+      }
+      return true;
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+</div>

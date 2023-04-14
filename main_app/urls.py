@@ -1,6 +1,5 @@
 from django.urls import path, reverse_lazy
 from . import views
-from django.contrib.auth import views as auth_views
 from .Controllers.Login_Controller import Login_Controller
 from .Controllers.Register_Controller import Register_Controller
 from .Controllers.Company_Process_Controller import Company_Process_Controller
@@ -16,9 +15,6 @@ from .Controllers.Orders_Maintanance_Controller import Orders_Maintanance_Contro
 app_name = "main_app"
 
 urlpatterns = [
-    path('order_tracking/', views.members, name='members'),
-    path('registration_test/', views.registration_example, name='registration_example'),
-    path('login_test/', views.login_example, name='login_example'),
     path('', views.main_page, name='Main_page'),
     path('orders_manager/login/', Login_Controller.as_view(), name = 'Login'),
     path('orders_manager/register/', Register_Controller.as_view(), name = 'Register'),

@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'orders_tracking',
         'USER': 'root',
         #'PASSWORD': 'root',
-        'PASSWORD': 'joseandres',
+        'PASSWORD': 'new_password',
         'HOST':'localhost',
         'PORT':'3306',
     }

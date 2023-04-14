@@ -39,6 +39,43 @@
       rel="stylesheet"
       href="{% static 'css/Example.css' %} ?{% cache_bust %}"
     />
+
+    <!--For some reason css static file is not working on docker
+  
+    FUTURE: Fix css to use static
+  -->
+    <style>
+      .my-custom-scrollbar {
+        position: relative;
+        height: 600px;
+        overflow: auto;
+      }
+      .table-wrapper-scroll-y {
+        display: block;
+      }
+      body {
+        color: #000;
+        overflow-x: hidden;
+        height: 100%;
+        background-image: linear-gradient(135deg, white, #92a8d1, #34568b);
+        background-repeat: no-repeat;
+      }
+
+      .card {
+        z-index: 0;
+        background-color: #eceff1;
+        padding-bottom: 20px;
+        margin-top: 5px;
+        margin-bottom: 50px;
+        border-radius: 10px;
+      }
+
+      .top {
+        padding-top: 40px;
+        padding-left: 15% !important;
+        padding-right: 13% !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -199,111 +236,111 @@
       </div>
     </section>
   </body>
-
-  <script>
-    main();
-    var server = "{{server}}";
-
-    var name_field = $("#name_field");
-    var lastname_field = $("#lastname_field");
-    var email_field = $("#email_field");
-    var username_field = $("#username_field");
-    var password_field = $("#password_field");
-    var password_confirmation_field = $("#password_confirmation_field");
-    var birthdate_field = $("#birthdate_field");
-
-    function main() {
-      //validate_inputs()
-      $("#register_buttom").on("click", function () {
-        register_user();
-      });
-    }
-
-    const sleep = async (milliseconds) => {
-      await new Promise((resolve) => {
-        return setTimeout(resolve, milliseconds);
-      });
-    };
-
-    async function register_user() {
-      console.log("Entro a register_user");
-      console.log("THis is the server");
-      console.log(server);
-
-      if (validate_inputs()) {
-        console.log("Entro al if");
-
-        var dat = {
-          name: name_field.val(),
-          lastname: lastname_field.val(),
-          email: email_field.val(),
-          username: username_field.val(),
-          password: password_field.val(),
-          birthdate: birthdate_field.val(),
-        };
-        const csrftoken = Cookies.get("csrftoken");
-
-        try {
-          $.ajax({
-            url: "/orders_manager/register/",
-            headers: { "X-CSRFToken": csrftoken },
-            type: "PUT",
-            dataType: "json",
-            data: JSON.stringify(dat),
-            success: function (result) {
-              console.log("Puta madre funciono!");
-              console.log(result);
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Registration complete",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            },
-            error: function (status, error) {
-              console.log("Registro no fue exitoso");
-              console.log(error);
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Registration failed on server",
-              });
-              return;
-            },
-          });
-        } catch (err) {
-          console.log(err);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Failed to connect to the server",
-          });
-          return;
-        }
-      }
-
-      await sleep(2000);
-      $(location).attr("href", "/orders_manager/login/");
-    }
-
-    function validate_inputs() {
-      if (
-        name_field.val() == "" ||
-        email_field.val() == "" ||
-        username_field.val() == "" ||
-        password_field.val() == "" ||
-        birthdate_field.val() == ""
-      ) {
-        Swal.fire("Fill all fields please");
-        return false;
-      }
-
-      if (password_field.val() != password_confirmation_field.val()) {
-        Swal.fire("Password doesnt match");
-        return false;
-      }
-      return true;
-    }
-  </script>
 </html>
+
+<script>
+  main();
+  var server = "{{server}}";
+
+  var name_field = $("#name_field");
+  var lastname_field = $("#lastname_field");
+  var email_field = $("#email_field");
+  var username_field = $("#username_field");
+  var password_field = $("#password_field");
+  var password_confirmation_field = $("#password_confirmation_field");
+  var birthdate_field = $("#birthdate_field");
+
+  function main() {
+    //validate_inputs()
+    $("#register_buttom").on("click", function () {
+      register_user();
+    });
+  }
+
+  const sleep = async (milliseconds) => {
+    await new Promise((resolve) => {
+      return setTimeout(resolve, milliseconds);
+    });
+  };
+
+  async function register_user() {
+    console.log("Entro a register_user");
+    console.log("THis is the server");
+    console.log(server);
+
+    if (validate_inputs()) {
+      console.log("Entro al if");
+
+      var dat = {
+        name: name_field.val(),
+        lastname: lastname_field.val(),
+        email: email_field.val(),
+        username: username_field.val(),
+        password: password_field.val(),
+        birthdate: birthdate_field.val(),
+      };
+      const csrftoken = Cookies.get("csrftoken");
+
+      try {
+        $.ajax({
+          url: "/orders_manager/register/",
+          headers: { "X-CSRFToken": csrftoken },
+          type: "PUT",
+          dataType: "json",
+          data: JSON.stringify(dat),
+          success: function (result) {
+            console.log("Puta madre funciono!");
+            console.log(result);
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Registration complete",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          error: function (status, error) {
+            console.log("Registro no fue exitoso");
+            console.log(error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Registration failed on server",
+            });
+            return;
+          },
+        });
+      } catch (err) {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to connect to the server",
+        });
+        return;
+      }
+    }
+
+    await sleep(2000);
+    $(location).attr("href", "/orders_manager/login/");
+  }
+
+  function validate_inputs() {
+    if (
+      name_field.val() == "" ||
+      email_field.val() == "" ||
+      username_field.val() == "" ||
+      password_field.val() == "" ||
+      birthdate_field.val() == ""
+    ) {
+      Swal.fire("Fill all fields please");
+      return false;
+    }
+
+    if (password_field.val() != password_confirmation_field.val()) {
+      Swal.fire("Password doesnt match");
+      return false;
+    }
+    return true;
+  }
+</script>

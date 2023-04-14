@@ -35,6 +35,10 @@
     />
   </head>
 
+  <!--For some reason css static file is not working on docker
+  
+    FUTURE: Fix css to use static
+  -->
   <style>
     .my-custom-scrollbar {
       position: relative;
@@ -43,6 +47,28 @@
     }
     .table-wrapper-scroll-y {
       display: block;
+    }
+    body {
+      color: #000;
+      overflow-x: hidden;
+      height: 100%;
+      background-image: linear-gradient(135deg, white, #92a8d1, #34568b);
+      background-repeat: no-repeat;
+    }
+
+    .card {
+      z-index: 0;
+      background-color: #eceff1;
+      padding-bottom: 20px;
+      margin-top: 5px;
+      margin-bottom: 50px;
+      border-radius: 10px;
+    }
+
+    .top {
+      padding-top: 40px;
+      padding-left: 15% !important;
+      padding-right: 13% !important;
     }
   </style>
 
