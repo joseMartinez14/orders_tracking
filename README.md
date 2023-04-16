@@ -64,64 +64,64 @@ We can see the process on the sections of the application:
 - Login
 
 <a>
-  <img src="images/Login.PNG" alt="Register" width="400" height="400">
+  <img src="images/Login.PNG" alt="Register" width="450" height="400">
 </a>
 
 - Register your company on the app
 
 <a>
-  <img src="images/Create_company.PNG" alt="Register" width="400" height="350">
+  <img src="images/Create_company.PNG" alt="Register" width="460" height="350">
 </a>
 
 - Add a new process
 
 <a>
-  <img src="images/Add_process1.PNG" alt="Register" width="400" height="450">
+  <img src="images/Add_process1.PNG" alt="Register" width="450" height="450">
 </a>
 <a>
-  <img src="images/Add_process2.PNG" alt="Register" width="400" height="450">
+  <img src="images/Add_process2.PNG" alt="Register" width="450" height="450">
 </a>
 
 - Maintenance on your process
 
 <a>
-  <img src="images/list_process.PNG" alt="Register" width="200" height="200">
+  <img src="images/list_process.PNG" alt="Register" width="450" height="450">
 </a>
 
 - Add a new client
 
 <a>
-  <img src="images/Add_client.PNG" alt="Register" width="200" height="200">
+  <img src="images/Add_client.PNG" alt="Register" width="450" height="400">
 </a>
 
 - Maintenance on your clients
 
 <a>
-  <img src="images/list_clients.PNG" alt="Register" width="200" height="200">
+  <img src="images/list_clients.PNG" alt="Register" width="550" height="450">
 </a>
 
 - Create order
 
 <a>
-  <img src="images/Create_order.PNG" alt="Register" width="200" height="200">
+  <img src="images/Create_order.PNG" alt="Register" width="450" height="400">
 </a>
 
 - Maintenance on your orders
 
 <a>
-  <img src="images/Orders_maintenance.PNG" alt="Register" width="200" height="200">
+  <img src="images/Orders_maintenance.PNG" alt="Register" width="550" height="450">
 </a>
 <a>
-  <img src="images/Order_description_qr.PNG" alt="Register" width="200" height="200">
+  <img src="images/Order_description_qr.PNG" alt="Register" width="400" height="350">
 </a>
 
 - Order details for clients
 
 <a>
-  <img src="images/order_1_1.PNG" alt="Register" width="200" height="200">
+  <img src="images/order_1_1.PNG" alt="Register" width="400" height="400">
 </a>
 <a>
-  <img src="images/order_1_2.PNG" alt="Register" width="200" height="200">
+  <img src="images/order_1_2.PNG" alt="Register" width="400" height="400">
 </a>
 
 <!-- MARKDOWN LINKS & IMAGES -->
