@@ -47,7 +47,7 @@ We can see the process on the sections of the application:
 
 - User registration
 
-[register]
+<img src="images/register.png" alt="Register" width="80" height="80">
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
