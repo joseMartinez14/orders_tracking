@@ -47,8 +47,9 @@ We can see the process on the sections of the application:
 
 - User registration
 
-<img src="images/register.png" alt="Register" width="80" height="80">
-
+<a>
+  <img src="images/register.png" alt="Register" width="80" height="80">
+</a>
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
