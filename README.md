@@ -58,28 +58,28 @@ We can see the process on the sections of the application:
 - User registration
 
 <a>
-  <img src="images/register.PNG" alt="Register" width="400" height="450">
+  <img src="images/register.PNG" alt="Register" width="500" height="450">
 </a>
 
 - Login
 
 <a>
-  <img src="images/Login.PNG" alt="Register" width="300" height="400">
+  <img src="images/Login.PNG" alt="Register" width="400" height="400">
 </a>
 
 - Register your company on the app
 
 <a>
-  <img src="images/Create_company.PNG" alt="Register" width="300" height="350">
+  <img src="images/Create_company.PNG" alt="Register" width="400" height="350">
 </a>
 
 - Add a new process
 
 <a>
-  <img src="images/Add_process1.PNG" alt="Register" width="200" height="200">
+  <img src="images/Add_process1.PNG" alt="Register" width="400" height="450">
 </a>
 <a>
-  <img src="images/Add_process2.PNG" alt="Register" width="200" height="200">
+  <img src="images/Add_process2.PNG" alt="Register" width="400" height="450">
 </a>
 
 - Maintenance on your process
