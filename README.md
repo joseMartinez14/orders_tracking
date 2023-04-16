@@ -37,6 +37,16 @@ This section should list any major frameworks/libraries used to bootstrap your p
 - Django
 - MySQL
 
+<!-- CONTACT -->
+
+## Contact
+
+Jose Andres Martinez - josems0899@gmail.com
+
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- GETTING STARTED -->
 
 ## Usage example
@@ -48,21 +58,71 @@ We can see the process on the sections of the application:
 - User registration
 
 <a>
-  <img src="images/register.PNG" alt="Register" width="80" height="80">
+  <img src="images/register.PNG" alt="Register" width="200" height="200">
 </a>
-_For more examples, please refer to the [Documentation](https://example.com)_
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- Login
 
-<!-- CONTACT -->
+<a>
+  <img src="images/Login.PNG" alt="Register" width="200" height="200">
+</a>
 
-## Contact
+- Register your company on the app
 
-Jose Andres Martinez - josems0899@gmail.com
+<a>
+  <img src="images/Create_company.PNG" alt="Register" width="200" height="200">
+</a>
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
+- Add a new process
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<a>
+  <img src="images/Add_process1.PNG" alt="Register" width="200" height="200">
+</a>
+<a>
+  <img src="images/Add_process2.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Maintenance on your process
+
+<a>
+  <img src="images/list_process.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Add a new client
+
+<a>
+  <img src="images/Add_client.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Maintenance on your clients
+
+<a>
+  <img src="images/list_clients.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Create order
+
+<a>
+  <img src="images/Create_order.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Maintenance on your orders
+
+<a>
+  <img src="images/Orders_maintenance.PNG" alt="Register" width="200" height="200">
+</a>
+<a>
+  <img src="images/Order_description_qr.PNG" alt="Register" width="200" height="200">
+</a>
+
+- Order details for clients
+
+<a>
+  <img src="images/order_1_1.PNG" alt="Register" width="200" height="200">
+</a>
+<a>
+  <img src="images/order_1_2.PNG" alt="Register" width="200" height="200">
+</a>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
