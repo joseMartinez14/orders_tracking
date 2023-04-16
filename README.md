@@ -85,7 +85,7 @@ We can see the process on the sections of the application:
 - Maintenance on your process
 
 <a>
-  <img src="images/list_process.PNG" alt="Register" width="600" height="500">
+  <img src="images/list_process.PNG" alt="Register" width="750" height="600">
 </a>
 
 - Add a new client
@@ -97,7 +97,7 @@ We can see the process on the sections of the application:
 - Maintenance on your clients
 
 <a>
-  <img src="images/list_clients.PNG" alt="Register" width="600" height="500">
+  <img src="images/list_clients.PNG" alt="Register" width="750" height="600">
 </a>
 
 - Create order
@@ -109,7 +109,7 @@ We can see the process on the sections of the application:
 - Maintenance on your orders
 
 <a>
-  <img src="images/Orders_maintenance.PNG" alt="Register" width="600" height="500">
+  <img src="images/Orders_maintenance.PNG" alt="Register" width="750" height="600">
 </a>
 <a>
   <img src="images/Order_description_qr.PNG" alt="Register" width="400" height="350">
