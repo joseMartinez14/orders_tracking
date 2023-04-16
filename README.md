@@ -19,32 +19,6 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
@@ -57,16 +31,23 @@ I am working on the deployment of the project
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- [![JQuery][jquery.com]][jquery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- Bootstrap
+- JQuery
+- HTML
+- Django
+- MySQL
 
 <!-- GETTING STARTED -->
 
 ## Usage example
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+This application is for any company to keep tracking of the customers step by step orders for a given process of that order. So you can provide to your customers a offline status of their order with a QR code or a link.
+
+We can see the process on the sections of the application:
+
+- User registration
+
+[register]
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -102,3 +83,16 @@ Jose Andres Martinez - josems0899@gmail.com
 [bootstrap-url]: https://getbootstrap.com
 [jquery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [jquery-url]: https://jquery.com
+[add_client]: images/Add_client.PNG
+[add_process1]: images/Add_process1.PNG
+[add_process2]: images/Add_process2.PNG
+[create_company]: images/Create_company.PNG
+[home]: images/home.PNG
+[list_clients]: images/list_clients.PNG
+[list_process]: images/list_process.PNG
+[login]: images/Login.PNG
+[order_1_1]: images/order_1_1.PNG
+[order_1_2]: images/order_1_2.PNG
+[order_description_qr]: images/Order_description_qr.PNG
+[orders_maintenance]: images/Orders_maintenance.PNG
+[register]: images/register.PNG
