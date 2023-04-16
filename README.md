@@ -51,6 +51,8 @@
 
 This app is one of my ideas to make software to solve peoples problems and create solutions to make their business and life better. Also it manifest my passion for fullstack develpment since I create this proyects while working full time of Intel on my free time outside of any work or school task, hopping one day direct my career to app development.
 
+I am working on the deployment of the project
+
 ### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
@@ -61,11 +63,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
-
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ## Usage example
 

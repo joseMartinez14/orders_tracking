@@ -30,14 +30,8 @@ class Company_Controller(APIView):
         pass
 
     def put(self, request):
-        print("Got to post on Company_Controller put")
         session = request.COOKIES.get("sessionid","")
         x = json.loads(request.body)
-        print("This is the body")
-        print(x)
-
-        print("This is the data")
-        print(request.data)
 
         try:
             result = create_company(x, session)
@@ -45,7 +39,6 @@ class Company_Controller(APIView):
                 return Response({}, status=status.HTTP_302_FOUND)
             return Response({}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -95,8 +88,6 @@ def prepare_data(session):
 
     
 def get_user_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]
@@ -104,8 +95,6 @@ def get_user_by_session(session):
     return user_id
 
 def get_company_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     _user_id = user_logged_in["_auth_user_id"]

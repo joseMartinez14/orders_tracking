@@ -311,9 +311,6 @@
   main();
 
   function main() {
-    console.log(server);
-    console.log("Hello ooo bitch");
-
     populate_steps_table();
 
     $("#add_step_button").on("click", function () {
@@ -358,9 +355,6 @@
           $("#close_process_modal_button").click();
         },
         error: function (status, error) {
-          console.log("Login no fue exitoso");
-          console.log(error);
-          console.log(status.status);
           if (status.status == 302) {
             Swal.fire({
               icon: "error",
@@ -377,7 +371,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -435,7 +428,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -450,7 +442,6 @@
     process_description,
     process_company_id
   ) {
-    console.log("entro a select_process");
     select_steps(process_id);
     selected_process_id = process_id;
     $("#save_process_button").hide();
@@ -472,10 +463,8 @@
         dataType: "json",
         data: JSON.stringify(dat),
         success: function (result) {
-          console.log("aqui aqui aqui aqui los steps que recibi");
           steps_data = [];
           result.forEach((step) => {
-            console.log(step);
             steps_data.push({
               step_id: step.id,
               step_name: step.Step_Name,
@@ -497,7 +486,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -546,9 +534,6 @@
           $("#close_process_modal_button").click();
         },
         error: function (status, error) {
-          console.log("Login no fue exitoso");
-          console.log(error);
-          console.log(status.status);
           if (status.status == 302) {
             Swal.fire({
               icon: "error",
@@ -565,7 +550,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -575,7 +559,6 @@
   }
 
   function add_new_step() {
-    console.log("Entro a add_new_step");
     var name = $("#step_name_field");
     var description = $("#step_description_field");
     if (name.val() == "") {
@@ -595,11 +578,8 @@
   }
 
   function populate_steps_table() {
-    console.log("Entro a populate_steps_table");
-    console.log(steps_data);
     lista.empty();
     steps_data.forEach((obj) => {
-      console.log(obj);
       var tr = $("<tr/>");
       tr.html(
         "<td>" +

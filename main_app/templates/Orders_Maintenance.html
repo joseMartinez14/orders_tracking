@@ -348,7 +348,6 @@
     $("#search_client_input").on("keyup", function () {
       var value = $(this).val().toLowerCase();
       $("#client_list tr").filter(function () {
-        console.log(typeof $(this));
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
       });
     });
@@ -415,7 +414,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -456,7 +454,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -508,8 +505,6 @@
     client_email,
     client_address
   ) {
-    console.log("client_id");
-    console.log(client_id);
     $("#save_client_button").hide();
     $("#update_client_button").show();
     $("#modal_title_id").text("Update Client");
@@ -557,7 +552,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -571,7 +565,6 @@
   }
 
   function delete_client_confirmation(client_id, client_name) {
-    console.log("delete client");
     Swal.fire({
       title: "Do you want to delete client: " + client_name,
       showCancelButton: true,
@@ -612,7 +605,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -650,8 +642,6 @@
           $("#close_client_modal_button").click();
         },
         error: function (status, error) {
-          console.log(error);
-          console.log(status);
           if (status.status == 302) {
             Swal.fire({
               icon: "error",
@@ -674,7 +664,6 @@
         },
       });
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -684,9 +673,6 @@
   }
 
   function select_client_from_list(client_id, client_name) {
-    console.log("select_client_from_list");
-    console.log("***");
-    console.log(client_id);
     selected_client_id = client_id;
     $("#client_name_field").val(client_name);
     $("#close_client_list_modal").click();

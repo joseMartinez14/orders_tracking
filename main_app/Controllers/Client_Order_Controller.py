@@ -33,7 +33,6 @@ class Client_Order_Controller(APIView):
         session = request.COOKIES.get("sessionid","")
         order_number = ""
         try:
-            print(request.query_params)
             order_number = request.query_params['order_number']
         except:
             #TODO: Return a visual that shows an error and ask for the order number
@@ -90,9 +89,6 @@ def prepare_data(order_number):
                 )
         except:
             client_steps = None
-
-    print("************")
-    print(client_steps)
 
     return {
         "company" : company,

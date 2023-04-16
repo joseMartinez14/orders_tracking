@@ -31,9 +31,7 @@ class Login_Controller(APIView):
         return HttpResponse(template.render(data, request))
     
     def post(self, request):
-        print("Got to post on Test_Controller")
         x = json.loads(list(request.data.dict().keys())[0])
-        print(x)
         login_user = make_login(x["usuario"], x["contrasenna"])
         try:
             #login_user = make_login(x["usuario"], x["contrasenna"])
@@ -42,13 +40,11 @@ class Login_Controller(APIView):
                 response = Response({}, status=status.HTTP_200_OK)
                 return response
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_302_FOUND)
 
         return Response({}, status=status.HTTP_400_BAD_REQUEST)    
     
     def put(self, request):
-        print("This is put")
         pass
 
     def delete(self, request):

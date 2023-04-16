@@ -142,9 +142,6 @@
     main();
 
     function main() {
-      console.log(server);
-      console.log("Hello ooo bitch");
-
       $("#submit_buttom").on("click", function () {
         add_new_company();
       });
@@ -180,8 +177,6 @@
             });
           },
           error: function (status, error) {
-            console.log(error);
-            console.log(status);
             if (status.status == 302) {
               Swal.fire({
                 icon: "error",
@@ -198,7 +193,6 @@
           },
         });
       } catch (err) {
-        console.log(err);
         Swal.fire({
           icon: "error",
           title: "Oops...",

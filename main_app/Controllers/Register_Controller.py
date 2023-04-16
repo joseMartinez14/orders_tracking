@@ -21,7 +21,6 @@ class Register_Controller(APIView):
 
     def get(self, request):
         #I guess I need to check cache and to see if is logged in or session?
-        print("Puta vida mae")
         template = loader.get_template('Registration.html')
         data = prepare_data()
         return HttpResponse(template.render(data, request))
@@ -30,8 +29,6 @@ class Register_Controller(APIView):
         pass
 
     def put(self, request):
-        print("Got to post on Register_Controller put")
-
         x = json.loads(request.body)
 
         result = register_user(x)
@@ -41,7 +38,6 @@ class Register_Controller(APIView):
             elif(result == "success"):
                 return Response({}, status=status.HTTP_200_OK)
         except:
-            print("Esta mierda murio") 
             return Response({}, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -50,8 +46,6 @@ class Register_Controller(APIView):
         pass
 
 def register_user(data):
-
-    print(data)
 
     if ( auth_user.objects.filter(username = data["username"]).exists()
         or 

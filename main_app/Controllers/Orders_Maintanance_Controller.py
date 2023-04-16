@@ -34,7 +34,6 @@ class Orders_Maintanance_Controller(APIView):
         except ValueError:
             return redirect('main_app:create_company')
         except:
-            print("Unable to get data on Orders_Maintanance_Controller")
             data = {}
 
         return HttpResponse(template.render(data, request))
@@ -48,17 +47,14 @@ class Orders_Maintanance_Controller(APIView):
                 return Response({}, status=status.HTTP_307_TEMPORARY_REDIRECT)
             return Response({}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        print("Got to post on Orders_Maintanance_Controller put")
         x = json.loads(request.body)
         try:
             update_client_process(x)
             return Response({}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -179,8 +175,6 @@ def set_status_now(process, description_obj):
 
     
 def get_user_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]

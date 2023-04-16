@@ -264,13 +264,7 @@
   };
 
   async function register_user() {
-    console.log("Entro a register_user");
-    console.log("THis is the server");
-    console.log(server);
-
     if (validate_inputs()) {
-      console.log("Entro al if");
-
       var dat = {
         name: name_field.val(),
         lastname: lastname_field.val(),
@@ -289,8 +283,6 @@
           dataType: "json",
           data: JSON.stringify(dat),
           success: function (result) {
-            console.log("Puta madre funciono!");
-            console.log(result);
             Swal.fire({
               position: "top-end",
               icon: "success",
@@ -300,8 +292,6 @@
             });
           },
           error: function (status, error) {
-            console.log("Registro no fue exitoso");
-            console.log(error);
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -311,7 +301,6 @@
           },
         });
       } catch (err) {
-        console.log(err);
         Swal.fire({
           icon: "error",
           title: "Oops...",

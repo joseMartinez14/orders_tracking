@@ -44,11 +44,9 @@ class Company_Client_Controller(APIView):
 
             return Response({"client_id": result.id, "client_name": result.Name}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        print("Got to post on Company_Client_Controller put")
         session = request.COOKIES.get("sessionid","")
         x = json.loads(request.body)
 
@@ -56,18 +54,15 @@ class Company_Client_Controller(APIView):
             update_company_client(x)
             return Response({}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
     
 
     def delete(self, request):
-        print("Got to post on Company_Client_Controller delete")
         x = json.loads(request.body)
         try:
             delete_company_client(x)
             return Response({}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -92,8 +87,6 @@ def create_company_client(json_data, session):
         return None
     company = get_company_by_session(session)
     if(company is None):
-        print("Company is None")
-        print(company)
         return "UNAVAILABLE"
     
     _user = get_user_by_session(session)
@@ -147,8 +140,6 @@ def prepare_data(session):
 
     
 def get_user_by_session(session):
-    print("aqui aquiu aqui")
-    print(session)
     s = Session.objects.get(pk=session)
     user_logged_in = s.get_decoded()
     user_id = user_logged_in["_auth_user_id"]

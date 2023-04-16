@@ -46,11 +46,8 @@ class Order_Controller(APIView):
         pass
 
     def put(self, request):
-        print("Got to post on Order_Controller put")
         session = request.COOKIES.get("sessionid","")
         x = json.loads(request.body)
-        print("This is the body")
-        print(x)
         try:
             result = create_new_order(session, x)
             if (result is None):
@@ -59,7 +56,6 @@ class Order_Controller(APIView):
                 return Response({}, status=status.HTTP_302_FOUND)
             return Response({"order_id": result.id}, status=status.HTTP_200_OK)
         except:
-            print("An exception occurred") 
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
@@ -95,12 +91,7 @@ def create_new_order(session, data):
 
     steps = Company_Process_step_template.objects.filter(Company_Process_id=data["process_id"]).values()
 
-    print("all steps")
-    print(steps)
-    
     for step in sorted(steps, key=lambda x: x["Step_Order_Number"]):
-        print("---- step in for ------")
-        print(step)
         client_order_step = Process_Step_Client(
             Company_Process_step_template_id = step["id"],
             Order = order,

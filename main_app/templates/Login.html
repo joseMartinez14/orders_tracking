@@ -161,8 +161,6 @@
     main();
 
     function main() {
-      console.log(server);
-      console.log("Hello ooo bitch");
       $("#login_buttom").on("click", function () {
         login_triger();
       });
@@ -177,16 +175,6 @@
     function loginAction() {
       var email = $("#email_field").val();
       var contra = $("#password_field").val();
-
-      console.log("-----------");
-      console.log(server);
-
-      console.log(email);
-      console.log(contra);
-
-      if (document.cookie && document.cookie !== "") {
-        console.log(document.cookie);
-      }
 
       var dat = { contrasenna: contra, usuario: email };
       const csrftoken = getCookie("csrftoken");
@@ -210,7 +198,6 @@
           },
           error: function (status, error) {
             if (status.status == 303) {
-              console.log("No tenia una session ID entonces le mando otra");
               ajax_attempt++;
               if (ajax_attempt > 4) {
                 Swal.fire({
