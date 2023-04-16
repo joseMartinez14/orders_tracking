@@ -86,8 +86,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'orders_tracking',
         'USER': 'root',
-        #'PASSWORD': 'root',
-        'PASSWORD': 'new_password',
+        #'PASSWORD': 'joseandres',
+        'PASSWORD': 'root',
         'HOST':'localhost',
         'PORT':'3306',
     }

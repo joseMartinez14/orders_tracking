@@ -1,13 +1,17 @@
-FROM python:latest
+FROM python:3.8
+ENV PYTHONUNBUFFERED 1
 
-ENV PYTHONUNBUFFERED=1
-
+COPY . /app
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y netcat-openbsd \
+    && apt-get clean
 
-COPY ./requirements.txt ./
+RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
-COPY ./ ./
+COPY wait.sh /wait.sh
+RUN chmod +x /wait.sh   
 

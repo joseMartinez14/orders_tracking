@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: mysql
+    image: mysql:8
     ports:
       - "3306:3306"
     environment:
@@ -11,9 +11,10 @@ services:
     volumes:
       - /tmp/app/mysqld:/var/run/mysqld
       - ./db:/var/lib/mysql
+      - ./db:/always-initdb.d:ro
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    entrypoint: ["./wait.sh"]
     ports:
       - "8000:8000"
     volumes:
