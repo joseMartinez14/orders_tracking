@@ -70,7 +70,7 @@ We can see the process on the sections of the application:
 - Register your company on the app
 
 <a>
-  <img src="images/Create_company.PNG" alt="Register" width="460" height="350">
+  <img src="images/Create_company.PNG" alt="Register" width="490" height="350">
 </a>
 
 - Add a new process
@@ -85,31 +85,31 @@ We can see the process on the sections of the application:
 - Maintenance on your process
 
 <a>
-  <img src="images/list_process.PNG" alt="Register" width="450" height="450">
+  <img src="images/list_process.PNG" alt="Register" width="600" height="500">
 </a>
 
 - Add a new client
 
 <a>
-  <img src="images/Add_client.PNG" alt="Register" width="450" height="400">
+  <img src="images/Add_client.PNG" alt="Register" width="500" height="400">
 </a>
 
 - Maintenance on your clients
 
 <a>
-  <img src="images/list_clients.PNG" alt="Register" width="550" height="450">
+  <img src="images/list_clients.PNG" alt="Register" width="600" height="500">
 </a>
 
 - Create order
 
 <a>
-  <img src="images/Create_order.PNG" alt="Register" width="450" height="400">
+  <img src="images/Create_order.PNG" alt="Register" width="500" height="400">
 </a>
 
 - Maintenance on your orders
 
 <a>
-  <img src="images/Orders_maintenance.PNG" alt="Register" width="550" height="450">
+  <img src="images/Orders_maintenance.PNG" alt="Register" width="600" height="500">
 </a>
 <a>
   <img src="images/Order_description_qr.PNG" alt="Register" width="400" height="350">
